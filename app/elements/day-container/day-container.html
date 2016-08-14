@@ -1,0 +1,28 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="day-container">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
+        Day
+        [[ day ]]
+        
+    </template>
+    <script>
+    Polymer({
+        is: 'day-container',
+
+        properties: {
+            day: {
+                type: Number
+            }
+        },
+
+        ready: function() {
+
+        }
+    });
+    </script>
+</dom-module>
