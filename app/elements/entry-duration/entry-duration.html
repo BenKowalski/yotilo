@@ -55,7 +55,7 @@
 
         </style>
 
-        <input id="input" type="text" value$="[[_calculateHours(duration)]]:[[_calculateMinutes(duration)]]" />
+        <input id="input" type="text" value$="[[_calculateHours(duration)]]:[[_calculateMinutes(duration)]]" on-blur="_save" />
 
         <div on-tap="_openInput">
             [[_calculateHours(duration)]]<span>:</span>[[_calculateMinutes(duration)]]
@@ -69,7 +69,8 @@
         properties: {
             duration: {
                 type: Number,
-                value: 0
+                value: 0,
+                notify: true
             }
         },
 
@@ -97,6 +98,14 @@
 
         _openInput: function() {
             this.$.input.focus();
+        },
+
+        _save: function(e) {
+
+            var tmp = e.target.value.split(':');
+            tmp = ((parseInt(tmp[0]) * 60) + parseInt(tmp[1])) * 60;
+
+            this.duration = tmp;
         }
     });
     </script>
