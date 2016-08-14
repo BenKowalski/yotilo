@@ -1,0 +1,41 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="time-entry">
+    <template>
+        <style>
+        :host {
+            display: block;
+            height:8rem;
+            border-bottom:var(--color-border) 1px solid;
+        }
+
+        p {
+            padding:0;
+            margin:0;
+            font-size:14px;
+            line-height: 8rem;
+        }
+
+        </style>
+
+        <p>
+            [[ data.duration ]]
+        </p>
+        
+    </template>
+    <script>
+    Polymer({
+        is: 'time-entry',
+
+        properties: {
+            data: {
+                type: Object,
+                value: {}
+            }
+        },
+
+        ready: function() {
+
+        }
+    });
+    </script>
+</dom-module>
