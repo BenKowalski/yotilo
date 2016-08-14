@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../entry-duration/entry-duration.html">
+
 <dom-module id="time-entry">
     <template>
         <style>
@@ -17,9 +19,8 @@
 
         </style>
 
-        <p>
-            [[ data.duration ]]
-        </p>
+        <entry-duration duration="{{data.duration}}"></entry-duration>
+
         
     </template>
     <script>
@@ -29,7 +30,8 @@
         properties: {
             data: {
                 type: Object,
-                value: {}
+                value: {},
+                notify: true
             }
         },
 
