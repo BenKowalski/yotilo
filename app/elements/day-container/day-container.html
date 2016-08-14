@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../time-entry/time-entry.html">
 <dom-module id="day-container">
     <template>
         <style>
@@ -6,8 +8,12 @@
             display: block;
         }
         </style>
-        Day
-        [[ day ]]
+
+    <iron-localstorage name$="day-[[day]]" value="{{data}}" on-iron-localstorage-load-empty="_initDay"></iron-localstorage>
+
+        <template is="dom-repeat" items="{{data}}">
+            <time-entry data="{{item}}"></time-entry>
+        </template>
         
     </template>
     <script>
@@ -17,11 +23,31 @@
         properties: {
             day: {
                 type: Number
+            },
+            data: {
+                type: Array,
+                value: []
             }
         },
 
         ready: function() {
 
+        },
+
+        _initDay: function() {
+            this.data = [];
+        },
+
+        addEntry: function() {
+
+            console.log('T');
+
+            this.push('data',  {
+                duration: 0,
+                project: 0,
+                task: 0,
+                comment: ''
+            });
         }
     });
     </script>
