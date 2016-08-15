@@ -76,6 +76,11 @@
             background: #EEE;
         }
         
+        #select div:empty:after {
+            content: "No Name";
+            opacity: .5;
+        }
+        
         #select.open + .shadow {
             display: block;
         }
@@ -95,6 +100,7 @@
                 [[_displayProject(selected, options, kind, options.*)]]
             </span>
             <div id="select">
+                <div on-tap="_select">No [[kind]]</div>
                 <template is="dom-repeat" items="[[options]]" filter="_filter" observe="state">
                     <div on-tap="_select">[[item.title]]</div>
                 </template>
@@ -135,10 +141,18 @@
         },
 
         _select: function(e) {
-            this.fire('select-option', {
-                kind: this.kind,
-                id: e.model.__data__.item.id
-            });
+
+            if (e.model) {
+                this.fire('select-option', {
+                    kind: this.kind,
+                    id: e.model.__data__.item.id
+                });
+            } else {
+                this.fire('select-option', {
+                    kind: this.kind,
+                    id: 0
+                });
+            }
 
             this._close(e);
         },

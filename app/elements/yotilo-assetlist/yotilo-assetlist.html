@@ -70,7 +70,7 @@
         <iron-localstorage name$="[[asset]]" value="{{data}}" on-iron-localstorage-load-empty="_initAsset"></iron-localstorage>
         <template is="dom-repeat" items="{{data}}" filter="_filter" observe="state">
             <div>
-                <input type="text" value$="{{item.title}}" on-blur="_save" on-keydown="_keydown">
+                <input type="text" value$="{{item.title}}" placeholder="No Name" on-blur="_save" on-keydown="_keydown">
                 <button on-tap="_archive">
                     Archive Entry
                 </button>
