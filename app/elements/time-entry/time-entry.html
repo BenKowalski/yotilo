@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../entry-duration/entry-duration.html">
+<link rel="import" href="../entry-project/entry-project.html">
 
 <dom-module id="time-entry">
     <template>
@@ -17,9 +18,19 @@
             line-height: 8rem;
         }
 
+        .col {
+            float:left;
+            width:25%;
+        }
+
         </style>
 
-        <entry-duration duration="{{data.duration}}"></entry-duration>
+        <div class="col">
+            <entry-duration duration="{{data.duration}}"></entry-duration>
+        </div>
+        <div class="col">
+            <entry-project project="{{data.project}}"></entry-project>
+        </div>
 
         
     </template>
