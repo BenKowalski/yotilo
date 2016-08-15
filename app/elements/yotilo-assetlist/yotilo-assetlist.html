@@ -68,7 +68,7 @@
         }
         </style>
         <iron-localstorage name$="[[asset]]" value="{{data}}" on-iron-localstorage-load-empty="_initAsset"></iron-localstorage>
-        <template is="dom-repeat" items="{{data}}" filter="_filter" observe="state">
+        <template is="dom-repeat" items="{{data}}" filter="_filter" observe="state" sort="_sort">
             <div>
                 <input type="text" value$="{{item.title}}" placeholder="No Name" on-blur="_save" on-keydown="_keydown">
                 <button on-tap="_archive">
@@ -129,6 +129,10 @@
 
         _filter: function(item) {
             return item.state == 1;
+        },
+
+        _sort: function(a, b) {
+            return a.title > b.title;
         }
     });
     </script>

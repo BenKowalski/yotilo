@@ -101,7 +101,7 @@
             </span>
             <div id="select">
                 <div on-tap="_select">No [[kind]]</div>
-                <template is="dom-repeat" items="[[options]]" filter="_filter" observe="state">
+                <template is="dom-repeat" items="[[options]]" filter="_filter" observe="state" sort="_sort">
                     <div on-tap="_select">[[item.title]]</div>
                 </template>
             </div>
@@ -176,6 +176,10 @@
 
         _filter: function(item) {
             return item.state == 1;
+        },
+
+        _sort: function(a, b) {
+            return a.title > b.title;
         }
     });
     </script>
