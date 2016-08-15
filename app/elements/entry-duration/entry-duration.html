@@ -10,11 +10,59 @@
         
         :host:hover {}
         
+        :host.stopwatch div {
+            background: var(--color-blue);
+            border-color: var(--color-blue);
+            color: #FFF;
+        }
+        
+        :host.stopwatch div button {
+            border-color: #FFF;
+            opacity: 1;
+            background-image: url(/images/icons/pause-dark.svg);
+        }
+        
+        :host.stopwatch div span {
+            -webkit-animation: ticking 2000ms infinite;
+            animation: ticking 2000ms infinite;
+        }
+        
+        @-webkit-keyframes ticking {
+            0% {
+                opacity: 0;
+            }
+            49% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes ticking {
+            0% {
+                opacity: 0;
+            }
+            49% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
         div {
+            position: relative;
             display: inline-block;
             height: 6rem;
             border: transparent 1px solid;
-            padding: 0 2rem;
+            padding: 0 6rem 0 2rem;
             border-radius: 4px;
             font-size: 14px;
             line-height: 6rem;
@@ -26,6 +74,10 @@
         div:hover {
             border-color: var(--color-border);
             box-shadow: var(--shadow);
+        }
+        
+        div:hover button {
+            opacity: 1;
         }
         
         input {
@@ -57,10 +109,33 @@
         input:focus + div {
             opacity: 0;
         }
+        
+        button {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            width: 4rem;
+            height: 4rem;
+            background: #FFF;
+            border: var(--color-border) 1px solid;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            text-indent: -9999px;
+            opacity: 0;
+            transition: all 250ms ease;
+            cursor: pointer;
+            background: #FFF url(/images/icons/play-dark.svg) no-repeat center center;
+            background-size: 16px 16px;
+            outline: none;
+        }
         </style>
         <input id="input" type="text" value$="[[_calculateHours(duration)]]:[[_calculateMinutes(duration)]]" on-blur="_save" on-keydown="_keydown" />
         <div on-tap="_openInput">
             [[_calculateHours(duration)]]<span>:</span>[[_calculateMinutes(duration)]]
+            <button on-tap="_toggleStopwatch">
+                Toggle Stopwatch
+            </button>
         </div>
     </template>
     <script>
@@ -72,6 +147,11 @@
                 type: Number,
                 value: 0,
                 notify: true
+            },
+            stopwatch: {
+                type: Object,
+                notify: true,
+                observer: '_stopwatch'
             }
         },
 
@@ -112,6 +192,50 @@
         _keydown: function(e) {
             if (e.keyCode == 13) {
                 e.target.blur();
+            }
+        },
+
+        _stopwatch: function(stopwatch) {
+
+            if (stopwatch) {
+
+                this.toggleClass('stopwatch', true);
+
+                this.interval = setInterval(function() {
+
+                    var durationTemp = (new Date().getTime() - this.stopwatch.start);
+                    var durationTemp = Math.round(durationTemp / 1000)
+                    this.set('duration', durationTemp);
+
+                }.bind(this), 1000);
+
+                document.body.addEventListener('toggle-stopwatch', function(e) {
+
+                    if (this.stopwatch && this.stopwatch.start != e.detail.start) {
+                        this.set('stopwatch', false);
+                    }
+                }.bind(this));
+
+            } else {
+                this.toggleClass('stopwatch', false);
+                clearInterval(this.interval);
+            }
+        },
+
+        _toggleStopwatch: function(e) {
+
+            e.stopPropagation();
+
+            if (!this.stopwatch) {
+                this.set('stopwatch', {
+                    start: (new Date().getTime() - this.duration * 1000)
+                });
+
+                this.fire('toggle-stopwatch', {
+                    start: this.stopwatch.start
+                });
+            } else {
+                this.set('stopwatch', false);
             }
         }
     });

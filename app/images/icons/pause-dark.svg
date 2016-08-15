@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>pause</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Interim" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g id="pause" stroke="#333" stroke-width="1.5">
+            <path d="M5,10.5089948 C5,10.7801695 5.23193359,11 5.5,11 L5.5,11 C5.77614237,11 6,10.7721195 6,10.5089948 L6,5.49100517 C6,5.2198305 5.76806641,4.99999999 5.5,4.99999999 L5.5,4.99999999 C5.22385763,4.99999999 5,5.22788047 5,5.49100517 L5,10.5089948 Z" id="path"></path>
+            <path d="M10,10.5089948 C10,10.7801695 10.2319336,11 10.5,11 L10.5,11 C10.7761424,11 11,10.7721195 11,10.5089948 L11,5.49100518 C11,5.21983051 10.7680664,5 10.5,5 L10.5,5 C10.2238576,5 10,5.22788048 10,5.49100518 L10,10.5089948 Z" id="path"></path>
+        </g>
+    </g>
+</svg>
