@@ -6,12 +6,11 @@
         :host {
             display: block;
             max-width: 128rem;
-            margin:0 auto;
+            margin: 0 auto;
         }
         </style>
-
         <template is="dom-repeat" items="{{days}}">
-          <day-container id$="day-[[item]]" day="[[item]]" projects="[[projects]]" tasks="[[tasks]]"d></day-container>
+            <day-container id$="day-[[item]]" day="[[item]]" projects="[[projects]]" tasks="[[tasks]]" d></day-container>
         </template>
     </template>
     <script>
@@ -24,8 +23,8 @@
                 value: []
             },
             today: {
-              type: Number,
-              value: 0
+                type: Number,
+                value: 0
             }
         },
 

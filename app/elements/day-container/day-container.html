@@ -6,44 +6,41 @@
         <style>
         :host {
             display: block;
-            margin-bottom:8rem;
+            margin-bottom: 8rem;
         }
-
+        
         header {
-            height:8rem;
+            height: 8rem;
             border-bottom: var(--color-border) 1px solid;
         }
-
+        
         h3 {
-            margin:0;
-            padding:0;
-            font-size:16px;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
             font-family: Lato, sans-serif;
-            font-weight:600;
+            font-weight: 600;
             line-height: 8rem;
-            float:left;
+            float: left;
         }
-
+        
         button {
-            margin:1.5rem 0 0 0;
-            float:right;
-            height:5rem;
+            margin: 1.5rem 0 0 0;
+            float: right;
+            height: 5rem;
             border: var(--color-border) 1px solid;
-            background:#FFF;
+            background: #FFF;
             border-radius: 4px;
-            padding:0 2rem;
+            padding: 0 2rem;
             box-shadow: var(--shadow);
-            font-size:12px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: .05em;
-            font-weight:600;
-            outline:none;
+            font-weight: 600;
+            outline: none;
         }
-
         </style>
-
         <iron-localstorage name$="day-[[day]]" value="{{data}}" on-iron-localstorage-load-empty="_initDay"></iron-localstorage>
-
         <header>
             <h3>
                 [[_displayDay(day)]]
@@ -52,11 +49,9 @@
                 Add Entry
             </button>
         </header>
-
         <template is="dom-repeat" items="{{data}}">
             <time-entry data="{{item}}" projects="[[projects]]" tasks="[[tasks]]"></time-entry>
         </template>
-        
     </template>
     <script>
     Polymer({
@@ -82,7 +77,7 @@
 
         _newEntry: function() {
 
-            this.push('data',  {
+            this.push('data', {
                 duration: 0,
                 project: 0,
                 task: 0,
@@ -96,7 +91,7 @@
             var monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             var weekdayArray = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-            return dateTemp.getDate() +'. '+ monthArray[dateTemp.getMonth()] +', '+ weekdayArray[dateTemp.getDay()];
+            return dateTemp.getDate() + '. ' + monthArray[dateTemp.getMonth()] + ', ' + weekdayArray[dateTemp.getDay()];
         }
     });
     </script>

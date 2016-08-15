@@ -18,15 +18,15 @@
             pointer-events: none;
             transition: all 250ms ease;
         }
-
+        
         :host.open {
-            opacity:1;
+            opacity: 1;
             pointer-events: auto;
         }
-
+        
         :host.open div {
             opacity: 1;
-            transform:none;
+            transform: none;
         }
         
         div {
@@ -37,7 +37,7 @@
             padding: 2rem;
             box-shadow: var(--shadow);
             opacity: 0;
-            transform:translateY(3rem);
+            transform: translateY(3rem);
             transition: all 500ms ease;
         }
         </style>
@@ -60,7 +60,7 @@
         },
 
         ready: function() {
-            document.body.addEventListener('open-'+ this.overlayid +'-overlay', function(e) {
+            document.body.addEventListener('open-' + this.overlayid + '-overlay', function(e) {
                 this._open();
             }.bind(this));
         },

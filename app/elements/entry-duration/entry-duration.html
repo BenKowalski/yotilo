@@ -8,9 +8,8 @@
             display: block;
         }
         
-        :host:hover {
-        }
-
+        :host:hover {}
+        
         div {
             display: inline-block;
             height: 6rem;
@@ -19,24 +18,24 @@
             border-radius: 4px;
             font-size: 14px;
             line-height: 6rem;
-            cursor:pointer;
-            transition:all 250ms ease;
+            cursor: pointer;
+            transition: all 250ms ease;
             font-family: Lato, sans-serif;
         }
-
+        
         div:hover {
-            border-color:var(--color-border);
+            border-color: var(--color-border);
             box-shadow: var(--shadow);
         }
-
+        
         input {
             position: absolute;
-            top:0;
-            left:0;
-            height:6rem;
-            width:3rem;
-            background:#FFF;
-            padding:0;
+            top: 0;
+            left: 0;
+            height: 6rem;
+            width: 3rem;
+            background: #FFF;
+            padding: 0;
             border: var(--color-border) 1px solid;
             padding: 0 2rem;
             border-radius: 4px;
@@ -44,29 +43,25 @@
             outline: none;
             opacity: 0;
             pointer-events: none;
-            transition:all 250ms ease;
-            font-size:14px;
+            transition: all 250ms ease;
+            font-size: 14px;
             font-family: Lato, sans-serif;
         }
-
+        
         input:focus {
             opacity: 1;
             pointer-events: auto;
-            width:12rem;
+            width: 12rem;
         }
-
+        
         input:focus + div {
-            opacity:0;
+            opacity: 0;
         }
-
         </style>
-
         <input id="input" type="text" value$="[[_calculateHours(duration)]]:[[_calculateMinutes(duration)]]" on-blur="_save" on-keydown="_keydown" />
-
         <div on-tap="_openInput">
             [[_calculateHours(duration)]]<span>:</span>[[_calculateMinutes(duration)]]
         </div>
-
     </template>
     <script>
     Polymer({
@@ -115,7 +110,7 @@
         },
 
         _keydown: function(e) {
-            if(e.keyCode == 13) {
+            if (e.keyCode == 13) {
                 e.target.blur();
             }
         }

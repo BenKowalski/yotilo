@@ -8,9 +8,8 @@
             display: block;
         }
         
-        :host:hover {
-        }
-
+        :host:hover {}
+        
         div {
             display: inline-block;
             height: 6rem;
@@ -19,22 +18,19 @@
             border-radius: 4px;
             font-size: 14px;
             line-height: 6rem;
-            cursor:pointer;
-            transition:all 250ms ease;
+            cursor: pointer;
+            transition: all 250ms ease;
             font-family: Lato, sans-serif;
         }
-
+        
         div:hover {
-            border-color:var(--color-border);
+            border-color: var(--color-border);
             box-shadow: var(--shadow);
         }
-
         </style>
-
         <div on-tap="_openInput">
             [[project]]
         </div>
-
     </template>
     <script>
     Polymer({

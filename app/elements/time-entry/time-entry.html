@@ -1,38 +1,33 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../entry-duration/entry-duration.html">
 <link rel="import" href="../entry-project/entry-project.html">
-
 <dom-module id="time-entry">
     <template>
         <style>
         :host {
             display: block;
-            height:8rem;
-            border-bottom:var(--color-border) 1px solid;
+            height: 8rem;
+            border-bottom: var(--color-border) 1px solid;
         }
-
-        p {
-            padding:0;
-            margin:0;
-            font-size:14px;
+        
+        p {
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
             line-height: 8rem;
         }
-
+        
         .col {
-            float:left;
-            width:25%;
+            float: left;
+            width: 25%;
         }
-
         </style>
-
         <div class="col">
             <entry-duration duration="{{data.duration}}"></entry-duration>
         </div>
         <div class="col">
             <entry-project project="{{data.project}}"></entry-project>
         </div>
-
-        
     </template>
     <script>
     Polymer({
