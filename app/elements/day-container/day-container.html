@@ -67,6 +67,10 @@
             }
         },
 
+        listeners: {
+            'delete-entry': '_deleteEntry'
+        },
+
         ready: function() {
 
         },
@@ -93,6 +97,15 @@
             var weekdayArray = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
             return dateTemp.getDate() + '. ' + monthArray[dateTemp.getMonth()] + ', ' + weekdayArray[dateTemp.getDay()];
+        },
+
+        _deleteEntry: function(e) {
+
+            this.data.forEach(function(val, key) {
+                if (val.createdAt == e.detail.createdAt) {
+                    this.splice('data', key, 1);
+                }
+            }.bind(this));
         }
     });
     </script>
