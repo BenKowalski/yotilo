@@ -14,15 +14,19 @@
         div {
             display: inline-block;
             height: 6rem;
-            border: var(--color-border) 1px solid;
+            border: transparent 1px solid;
             padding: 0 2rem;
             border-radius: 4px;
             font-size: 14px;
             line-height: 6rem;
-            box-shadow: var(--shadow);
             cursor:pointer;
             transition:all 250ms ease;
             font-family: Lato, sans-serif;
+        }
+
+        div:hover {
+            border-color:var(--color-border);
+            box-shadow: var(--shadow);
         }
 
         input {
