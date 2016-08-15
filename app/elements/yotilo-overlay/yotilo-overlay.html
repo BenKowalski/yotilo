@@ -1,0 +1,80 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="yotilo-overlay">
+    <template>
+        <style>
+        :host {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            z-index: 2000;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 250ms ease;
+        }
+
+        :host.open {
+            opacity:1;
+            pointer-events: auto;
+        }
+
+        :host.open div {
+            opacity: 1;
+            transform:none;
+        }
+        
+        div {
+            max-width: 82rem;
+            margin: 12rem auto;
+            background: #FFF;
+            border-radius: 4px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform:translateY(3rem);
+            transition: all 500ms ease;
+        }
+        </style>
+        <div on-tap="_stopPropagation">
+            <content></content>
+        </div>
+    </template>
+    <script>
+    Polymer({
+        is: 'yotilo-overlay',
+
+        properties: {
+            overlayid: {
+                type: String
+            }
+        },
+
+        listeners: {
+            'tap': '_close'
+        },
+
+        ready: function() {
+            document.body.addEventListener('open-'+ this.overlayid +'-overlay', function(e) {
+                this._open();
+            }.bind(this));
+        },
+
+        _open: function(e) {
+            this.toggleClass('open', true);
+        },
+
+        _close: function(e) {
+            this.toggleClass('open', false);
+        },
+
+        _stopPropagation: function(e) {
+            e.stopPropagation();
+        }
+    });
+    </script>
+</dom-module>
