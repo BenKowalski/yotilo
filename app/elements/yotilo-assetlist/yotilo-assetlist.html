@@ -90,13 +90,10 @@
             },
             data: {
                 type: Array,
-                value: []
+                value: [],
+                notify: true
             }
         },
-
-        observers: [
-            '_dataToAsset(data, data.*)'
-        ],
 
         ready: function() {
 
@@ -110,10 +107,6 @@
                 state: 1,
                 createdAt: (new Date().getTime())
             });
-        },
-
-        _dataToAsset: function(data)  {
-            this.set('' + this.asset, data);
         },
 
         _initAsset: function() {
