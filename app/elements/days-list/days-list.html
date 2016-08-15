@@ -10,10 +10,6 @@
         }
         </style>
 
-        <button on-tap="_newEntry">
-          Add Entry
-        </button>
-
         <template is="dom-repeat" items="{{days}}">
           <day-container id$="day-[[item]]" day="[[item]]"></day-container>
         </template>
@@ -44,10 +40,6 @@
                 this.push('days', dateTemp);
                 dateTemp = this._prevDay(dateTemp);
             }
-        },
-
-        _newEntry: function(e) {
-          this.$$('#day-'+ this.today).addEntry();
         },
 
         _prevDay: function(day) {

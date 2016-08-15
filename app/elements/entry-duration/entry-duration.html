@@ -22,6 +22,7 @@
             box-shadow: var(--shadow);
             cursor:pointer;
             transition:all 250ms ease;
+            font-family: Lato, sans-serif;
         }
 
         input {
@@ -41,6 +42,7 @@
             pointer-events: none;
             transition:all 250ms ease;
             font-size:14px;
+            font-family: Lato, sans-serif;
         }
 
         input:focus {
@@ -55,7 +57,7 @@
 
         </style>
 
-        <input id="input" type="text" value$="[[_calculateHours(duration)]]:[[_calculateMinutes(duration)]]" on-blur="_save" />
+        <input id="input" type="text" value$="[[_calculateHours(duration)]]:[[_calculateMinutes(duration)]]" on-blur="_save" on-keydown="_keydown" />
 
         <div on-tap="_openInput">
             [[_calculateHours(duration)]]<span>:</span>[[_calculateMinutes(duration)]]
@@ -106,6 +108,12 @@
             tmp = ((parseInt(tmp[0]) * 60) + parseInt(tmp[1])) * 60;
 
             this.duration = tmp;
+        },
+
+        _keydown: function(e) {
+            if(e.keyCode == 13) {
+                e.target.blur();
+            }
         }
     });
     </script>
