@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../entry-duration/entry-duration.html">
-<link rel="import" href="../entry-project/entry-project.html">
+<link rel="import" href="../entry-select/entry-select.html">
 <dom-module id="time-entry">
     <template>
         <style>
@@ -19,14 +19,17 @@
         
         .col {
             float: left;
-            width: 25%;
+            width: 20%;
         }
         </style>
         <div class="col">
             <entry-duration duration="{{data.duration}}"></entry-duration>
         </div>
         <div class="col">
-            <entry-project project="{{data.project}}"></entry-project>
+            <entry-select kind="project" selected="{{data.project}}" options="[[projects]]"></entry-select>
+        </div>
+        <div class="col">
+            <entry-select kind="task" selected="{{data.task}}" options="[[tasks]]"></entry-select>
         </div>
     </template>
     <script>
@@ -41,8 +44,16 @@
             }
         },
 
+        listeners: {
+            'select-option': '_selectOption'
+        },
+
         ready: function() {
 
+        },
+
+        _selectOption: function(e) {
+            this.set('data.' + e.detail.kind, e.detail.id);
         }
     });
     </script>
