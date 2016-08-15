@@ -95,7 +95,7 @@
                 [[_displayProject(selected, options, kind, options.*)]]
             </span>
             <div id="select">
-                <template is="dom-repeat" items="[[options]]">
+                <template is="dom-repeat" items="[[options]]" filter="_filter" observe="state">
                     <div on-tap="_select">[[item.title]]</div>
                 </template>
             </div>
@@ -158,6 +158,10 @@
             } else {
                 return 'No ' + kind;
             }
+        },
+
+        _filter: function(item) {
+            return item.state == 1;
         }
     });
     </script>
