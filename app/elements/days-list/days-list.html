@@ -9,6 +9,7 @@
             margin: 0 auto;
         }
         </style>
+        <iron-localstorage name="startday" value="{{startday}}" on-iron-localstorage-load-empty="_initStartDay"></iron-localstorage>
         <template is="dom-repeat" items="{{days}}">
             <day-container id$="day-[[item]]" day="[[item]]" projects="[[projects]]" tasks="[[tasks]]" d></day-container>
         </template>
@@ -25,20 +26,19 @@
             today: {
                 type: Number,
                 value: 0
+            },
+            startday: {
+                type: Number,
+                observer: '_startDayChanged'
             }
         },
+
+
 
         ready: function() {
 
             var dateTemp = new Date();
             this.today = new Date(dateTemp.getFullYear(), dateTemp.getMonth(), dateTemp.getDate(), 0, 0, 0).getTime();
-
-            dateTemp = this.today;
-
-            for (var i = 0; i < 7; i++) {
-                this.push('days', dateTemp);
-                dateTemp = this._prevDay(dateTemp);
-            }
         },
 
         _prevDay: function(day) {
@@ -47,11 +47,24 @@
             return temp3;
         },
 
-        _nextDay: function() {
-            var t2 = new Date(this.day + 86400000 + 7200000);
-            t3 = new Date(t2.getFullYear(), t2.getMonth(), t2.getDate(), 0, 0, 0).getTime();
-            this.day = t3;
+        _startDayChanged: function(startday) {
+
+            if (typeof startday == 'number') {
+
+                dateTemp = this.today;
+                while (dateTemp >= startday) {
+
+                    this.push('days', dateTemp);
+                    dateTemp = this._prevDay(dateTemp);
+                }
+            }
         },
+
+        _initStartDay: function() {
+
+            var dateTemp = new Date();
+            this.startday = new Date(dateTemp.getFullYear(), dateTemp.getMonth(), dateTemp.getDate(), 0, 0, 0).getTime();
+        }
     });
     </script>
 </dom-module>
