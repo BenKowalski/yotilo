@@ -14,9 +14,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shared-styles">
   <template>
     <style>
+
+      .cf:before, .cf:after {
+          display: table;
+          content: "";
+      }
+
+      .cf:after, .clear {
+          clear: both;
+      }
+
       .content {
         margin-top:18rem;
       }
+      
       /* .page-title {
         @apply(--paper-font-display2);
       }

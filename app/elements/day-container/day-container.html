@@ -20,8 +20,19 @@
             font-size: 16px;
             font-family: Lato, sans-serif;
             font-weight: 600;
+            height: 8rem;
             line-height: 8rem;
             float: left;
+            overflow: hidden;
+        }
+        
+        h3 span {
+            display: inline-block;
+            font-size: 12px;
+            letter-spacing: .05em;
+            opacity: .5;
+            margin: 0 0 0 1rem;
+            font-weight: 600;
         }
         
         button {
@@ -41,9 +52,12 @@
         }
         </style>
         <iron-localstorage name$="day-[[day]]" value="{{data}}" on-iron-localstorage-load-empty="_initDay"></iron-localstorage>
-        <header>
+        <header class="cf">
             <h3>
-                [[_displayDay(day)]]
+                [[_displayDay(day)]] 
+                <span>
+                    [[_displayTotal(total)]] total
+                </span>
             </h3>
             <button on-tap="_newEntry">
                 Add Entry
@@ -64,12 +78,20 @@
             data: {
                 type: Array,
                 value: []
+            },
+            total: {
+                type: Number,
+                value: 0
             }
         },
 
         listeners: {
             'delete-entry': '_deleteEntry'
         },
+
+        observers: [
+            '_calculateTotal(data, data.*)'
+        ],
 
         ready: function() {
 
@@ -99,6 +121,17 @@
             return dateTemp.getDate() + '. ' + monthArray[dateTemp.getMonth()] + ', ' + weekdayArray[dateTemp.getDay()];
         },
 
+        _displayTotal: function(total) {
+
+            var hours = Math.floor(total / 3600);
+            total -= hours * 3600;
+            var minutes = Math.floor(total / 60);
+            if (minutes < 10) {
+                minutes = '0' + minutes;
+            }
+            return hours + ':' + minutes;
+        },
+
         _deleteEntry: function(e) {
 
             this.data.forEach(function(val, key) {
@@ -106,6 +139,17 @@
                     this.splice('data', key, 1);
                 }
             }.bind(this));
+        },
+
+        _calculateTotal: function(data, changeRecord) {
+
+            var total = 0;
+            data.forEach(function(val, key) {
+                total += val.duration;
+            });
+
+            console.log('TOTAL: ', total);
+            this.set('total', total);
         }
     });
     </script>
