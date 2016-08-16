@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="yotilo-statistics">
+    <template>
+        <style>
+        :host {
+            display: block;
+            max-width:128rem;
+            margin:0 auto;
+            background:var(--color-bg);
+            font-size:14px;
+            line-height:2rem;
+            padding:2rem;
+            box-sizing: border-box;
+            margin:0 auto 6rem auto;
+            border-radius: 4px;
+        }
+        </style>
+
+        [[_displayTotal(total)]] total
+      
+    </template>
+    <script>
+    Polymer({
+        is: 'yotilo-statistics',
+
+        properties: {
+            total: {
+                type: Number,
+                value: 0
+            },
+            daysTotal: {
+                type: Object,
+                value: {}
+            }
+        },
+
+        observers: [
+            '_calculateTotal(daysTotal, daysTotal.*)'
+        ],
+
+        ready: function() {
+            document.body.addEventListener('set-total', function(e) {
+                this._setTotal(e.detail);
+            }.bind(this));
+        },
+
+        _displayTotal: function(total) {
+
+            var hours = Math.floor(total / 3600);
+            total -= hours * 3600;
+            var minutes = Math.floor(total / 60);
+            if (minutes < 10) {
+                minutes = '0' + minutes;
+            }
+            return hours + ':' + minutes;
+        },
+
+        _calculateTotal: function(daysTotal, changeRecord) {
+
+            var total = 0;
+            for (var id in daysTotal) {
+                total += daysTotal[id];
+            }
+
+            this.set('total', total);
+        },
+
+        _setTotal: function(data) {
+            this.set('daysTotal.'+data.day, data.total)
+        }
+
+    });
+    </script>
+</dom-module>

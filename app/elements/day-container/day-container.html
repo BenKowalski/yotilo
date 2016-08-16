@@ -148,7 +148,11 @@
                 total += val.duration;
             });
 
-            console.log('TOTAL: ', total);
+            this.fire('set-total', {
+                day: this.day,
+                total: total
+            });
+
             this.set('total', total);
         }
     });
