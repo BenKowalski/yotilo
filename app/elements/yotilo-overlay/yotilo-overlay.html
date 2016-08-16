@@ -60,9 +60,8 @@
         },
 
         ready: function() {
-            document.body.addEventListener('open-' + this.overlayid + '-overlay', function(e) {
-                this._open();
-            }.bind(this));
+
+            this.listen(document.body, 'open-' + this.overlayid + '-overlay', '_open');
         },
 
         _open: function(e) {

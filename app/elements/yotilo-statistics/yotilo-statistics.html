@@ -39,9 +39,8 @@
         ],
 
         ready: function() {
-            document.body.addEventListener('set-total', function(e) {
-                this._setTotal(e.detail);
-            }.bind(this));
+
+            this.listen(document.body, 'set-total', '_setTotal');
         },
 
         _displayTotal: function(total) {
@@ -66,7 +65,7 @@
         },
 
         _setTotal: function(data) {
-            this.set('daysTotal.'+data.day, data.total)
+            this.set('daysTotal.'+data.detail.day, data.detail.total)
         }
 
     });
