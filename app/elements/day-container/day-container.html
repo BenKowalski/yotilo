@@ -77,7 +77,9 @@
             },
             data: {
                 type: Array,
-                value: []
+                value: function() {
+                    return [];
+                }
             },
             total: {
                 type: Number,
@@ -143,17 +145,36 @@
 
         _calculateTotal: function(data, changeRecord) {
 
-            var total = 0;
+
+
+            var durations = {
+                total: 0,
+                projects: {},
+                tasks: {}
+            };
+
             data.forEach(function(val, key) {
-                total += val.duration;
+                durations.total += val.duration;
+
+                if( !durations.projects[val.project] ) {
+                    durations.projects[val.project] = val.duration;
+                } else {
+                    durations.projects[val.project] += val.duration
+                }
+
+                if( !durations.tasks[val.task] ) {
+                    durations.tasks[val.task] = val.duration;
+                } else {
+                    durations.tasks[val.task] += val.duration
+                }
             });
 
-            this.fire('set-total', {
+            this.fire('set-durations', {
                 day: this.day,
-                total: total
+                durations: durations
             });
 
-            this.set('total', total);
+            this.set('total', durations.total);
         }
     });
     </script>

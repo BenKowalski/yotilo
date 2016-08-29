@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../object-translate/object-translate.html">
 <dom-module id="yotilo-statistics">
     <template>
         <style>
@@ -6,7 +7,7 @@
             display: block;
             max-width:128rem;
             margin:0 auto;
-            background:var(--color-bg);
+            border:var(--color-border) 1px solid;
             font-size:14px;
             line-height:2rem;
             padding:2rem;
@@ -14,9 +15,122 @@
             margin:0 auto 6rem auto;
             border-radius: 4px;
         }
+
+        #ratio {
+            height:8rem;
+        }
+
+        #ratio > div {
+            float:left;
+        }
+
+
+
+        #ratio > div span {
+            display:block;
+            height:4rem;
+            background:#333;
+            color:#FFF;
+            font-size:12px;
+            font-weight:700;
+            line-height: 4rem;
+            padding:0 1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-font-smoothing:antialiased;
+            white-space: nowrap
+        }
+
+        #ratio > div:first-of-type span {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        #ratio > div:last-of-type span {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        #ratio > div:nth-child(1) span { background:#B35947; }
+        #ratio > div:nth-child(2) span { background:#68B359; }
+        #ratio > div:nth-child(3) span { background:#477DB3; }
+        #ratio > div:nth-child(4) span { background:#B359A4; }
+        #ratio > div:nth-child(5) span { background:#B37D47; }
+        #ratio > div:nth-child(6) span { background:#47B359; }
+        #ratio > div:nth-child(7) span { background:#4759B3; }
+        #ratio > div:nth-child(8) span { background:#B3477D; }
+        #ratio > div:nth-child(9) span { background:#B3A147; }
+        #ratio > div:nth-child(10) span { background:#47B37D; }
+        #ratio > div:nth-child(11) span { background:#5947B3; }
+        #ratio > div:nth-child(12) span { background:#B34759; }
+        #ratio > div:nth-child(13) span { background:#A1B347; }
+        #ratio > div:nth-child(14) span { background:#47B3A1; }
+        #ratio > div:nth-child(14) span { background:#7D47B3; }
+        #ratio > div:nth-child(14) span { background:#7DB347; }
+        #ratio > div:nth-child(14) span { background:#47A1B3; }
+        #ratio > div:nth-child(14) span { background:#A147B3; }
+
+
+
+        #ratio > div p {
+            padding:0;
+            margin:0;
+            font-size:12px;
+            line-height:4rem;
+            max-width:100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color:#333;
+            white-space: nowrap
+        }
+
+        #ratio > div:nth-child(1) p { color:#B35947; }
+        #ratio > div:nth-child(2) p { color:#68B359; }
+        #ratio > div:nth-child(3) p { color:#477DB3; }
+        #ratio > div:nth-child(4) p { color:#B359A4; }
+        #ratio > div:nth-child(5) p { color:#B37D47; }
+        #ratio > div:nth-child(6) p { color:#47B359; }
+        #ratio > div:nth-child(7) p { color:#4759B3; }
+        #ratio > div:nth-child(8) p { color:#B3477D; }
+        #ratio > div:nth-child(9) p { color:#B3A147; }
+        #ratio > div:nth-child(10) p { color:#47B37D; }
+        #ratio > div:nth-child(11) p { color:#5947B3; }
+        #ratio > div:nth-child(12) p { color:#B34759; }
+        #ratio > div:nth-child(13) p { color:#A1B347; }
+        #ratio > div:nth-child(14) p { color:#47B3A1; }
+        #ratio > div:nth-child(14) p { color:#7D47B3; }
+        #ratio > div:nth-child(14) p { color:#7DB347; }
+        #ratio > div:nth-child(14) p { color:#47A1B3; }
+        #ratio > div:nth-child(14) p { color:#A147B3; }
+
+
+
+        #total {
+            text-align: center;
+            margin:3rem 0 0 0;
+            padding:2rem 0 0 0;
+            border-top:var(--color-border) 1px solid;
+            font-weight:700;
+            font-size:16px;
+            line-height:2rem;
+        }
+
         </style>
 
-        [[_displayTotal(total)]] total
+        <object-translate data="[[ projectsTotals ]]" output="{{ projectsTotalsArray }}"></object-translate>
+
+        <div id="ratio">
+            <template is="dom-repeat" items="[[projectsTotalsArray]]">
+                <div style$="width:[[_calculateWidth(item, total)]]%">
+                    <span>[[_displayTotal(item.total)]]</span>
+                    <p>[[_displayProject(item.id, projects, projects.*)]]</p>
+                </div>
+            </template>
+        </div>
+
+        <div id="total">
+            [[_displayTotal(total)]] total
+        </div>
       
     </template>
     <script>
@@ -28,9 +142,23 @@
                 type: Number,
                 value: 0
             },
+            totalsProjects: {
+                type: Object,
+                value: function() {
+                    return {};
+                }
+            },
+            totalsTasks: {
+                type: Object,
+                value: function() {
+                    return {};
+                }
+            },
             daysTotal: {
                 type: Object,
-                value: {}
+                value: function(){
+                    return {};
+                }
             }
         },
 
@@ -40,7 +168,7 @@
 
         ready: function() {
 
-            this.listen(document.body, 'set-total', '_setTotal');
+            this.listen(document.body, 'set-durations', '_setDurations');
         },
 
         _displayTotal: function(total) {
@@ -54,18 +182,61 @@
             return hours + ':' + minutes;
         },
 
+        _displayProject: function(id, projects){
+
+            var title = 'No Project';
+            projects.forEach(function(val, key){
+                if( val.id == id) {
+                    title = val.title;
+                }
+            });
+
+            return title;
+        },
+
+        _calculateWidth: function(item, total){
+            return item.total / total * 100;
+        },  
+
         _calculateTotal: function(daysTotal, changeRecord) {
 
             var total = 0;
+            var projectsTotals = {};
+            var tasksTotals = {};
+
             for (var id in daysTotal) {
-                total += daysTotal[id];
+
+                total += daysTotal[id].total;
+
+                for (var projectID in daysTotal[id].projects ) {
+                    if( !projectsTotals[projectID] ) {
+                        if( daysTotal[id].projects[projectID] > 0) {
+                            projectsTotals[projectID] = {
+                                id: projectID,
+                                total: daysTotal[id].projects[projectID]
+                            }
+                        }
+                    } else {
+                         projectsTotals[projectID] += daysTotal[id].projects[projectID];
+                    }
+                }
+
+                for (var taskID in daysTotal[id].tasks ) {
+                    if( !tasksTotals[taskID] ) {
+                        tasksTotals[taskID] = daysTotal[id].tasks[taskID];
+                    } else {
+                         tasksTotals[taskID] += daysTotal[id].tasks[taskID];
+                    }
+                }
             }
 
             this.set('total', total);
+            this.set('projectsTotals', projectsTotals);
+            this.set('tasksTotals', tasksTotals);
         },
 
-        _setTotal: function(data) {
-            this.set('daysTotal.'+data.detail.day, data.detail.total)
+        _setDurations: function(data) {
+            this.set('daysTotal.'+data.detail.day, data.detail.durations)
         }
 
     });

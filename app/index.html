@@ -48,6 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- endbuild-->
 
   <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="/bower_components/underscore/underscore.js"></script>
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <!-- endbuild -->
 
@@ -76,7 +77,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <div style="font-size:15px;line-height:24px;text-align:center;margin:64px auto;">
                 This project is developed in the open and not ready yet. Stay tuned.
               </div>
-              <yotilo-statistics></yotilo-statistics>
+              <yotilo-statistics projects="[[projects]]" tasks="[[tasks]]"></yotilo-statistics>
               <days-list projects="[[projects]]" tasks="[[tasks]]">
               </days-list>
             </section>

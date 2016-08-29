@@ -1,0 +1,73 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../utils/underscore-js/underscore-js.html">
+
+<dom-module id="object-translate">
+    <template>
+    </template>
+    <script>
+        Polymer({
+            is: 'object-translate',
+
+            properties: {
+                data: {
+                    type: Object
+                },
+                output: {
+                    type: Array,
+                    notify: true,
+                    value: function() {
+                        return [];
+                    }
+                }
+            },
+
+            observers: [
+                '_onData(data.*)'
+            ],
+
+            ready: function () {
+            },
+
+            _onData: function(change) {
+                if(change) {
+                    var parts = change.path.split('.');
+                    if(parts.length < 2) {
+                        this.set('output', this._toArray(change.value));
+                    } else {
+                        var pos = _.find(_.range(this.output.length), function(index) {
+                            return this.output[index].$key == parts[1];
+                        }, this);
+                        var obj = change.base[parts[1]];
+
+                        // item removal
+                        if(!obj) {
+                            if(pos !== undefined) {
+                                this.splice('output', pos, 1);
+                            }
+                            return;
+                        }
+
+                        if(pos == undefined) {
+                            obj.$key = parts[1];
+                            this.push('output', obj);
+                        } else {
+                            var suffix = "";
+                            if(parts.length > 2) {
+                                // simple property change
+                                suffix = '.' + parts.slice(2).join('.');
+                            }
+                            this.set('output.'+String(pos)+suffix, change.value);
+                        }
+                    }
+                }
+            },
+
+            _toArray: function(obj) {
+                return _.map(obj, function(val, key) {
+                    val.$key = key;
+                    return val;
+                });
+            }
+        });
+    </script>
+</dom-module>
