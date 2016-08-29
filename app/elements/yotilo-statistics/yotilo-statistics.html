@@ -14,6 +14,7 @@
             box-sizing: border-box;
             margin:0 auto 6rem auto;
             border-radius: 4px;
+            background:var(--color-bg);
         }
 
         #ratio {
@@ -103,6 +104,16 @@
         #ratio > div:nth-child(14) p { color:#47A1B3; }
         #ratio > div:nth-child(14) p { color:#A147B3; }
 
+        #ratio.hidden {
+            display:none;
+        }
+
+        #ratio.hidden + #total {
+            border-top:0;
+            margin:0;
+            padding:0;
+        }
+
 
 
         #total {
@@ -119,7 +130,7 @@
 
         <object-translate data="[[ projectsTotals ]]" output="{{ projectsTotalsArray }}"></object-translate>
 
-        <div id="ratio">
+        <div id="ratio" class$="[[_calculateClass(total)]]">
             <template is="dom-repeat" items="[[projectsTotalsArray]]">
                 <div style$="width:[[_calculateWidth(item, total)]]%">
                     <span>[[_displayTotal(item.total)]]</span>
@@ -169,6 +180,14 @@
         ready: function() {
 
             this.listen(document.body, 'set-durations', '_setDurations');
+        },
+
+        _calculateClass: function(total) {
+            if( total == 0) {
+                return 'hidden';
+            } else {
+                return '';
+            }
         },
 
         _displayTotal: function(total) {
