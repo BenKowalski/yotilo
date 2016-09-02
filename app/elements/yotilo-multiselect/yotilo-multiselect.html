@@ -1,0 +1,259 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="yotilo-multiselect">
+    <template>
+        <style>
+        :host {
+            position: relative;
+            margin: 1rem 0 0 0;
+            display: block;
+        }
+        
+        :host:hover {}
+        
+        div.btn {
+            max-width: 100%;
+            box-sizing: border-box;
+            display: inline-block;
+            height: 8rem;
+            border: transparent 1px solid;
+            padding: 0 2rem;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 250ms ease;
+            font-family: Lato, sans-serif;
+        }
+        
+        div.btn:hover {
+            border-color: var(--color-border);
+            box-shadow: var(--shadow);
+            background: #FFF;
+        }
+        
+        span {
+            display: inline-block;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 4rem;
+        }
+        
+        small {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.5rem;
+            margin: 1.5rem 0 0 0;
+            color: var(--color-border);
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: .05em;
+        }
+        
+        small::first-letter {
+            text-transform: uppercase;
+        }
+        
+        #select {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2rem;
+            height: 2rem;
+            border: var(--color-border) 1px solid;
+            box-shadow: var(--shadow);
+            background: #FFF;
+            border-radius: 4px;
+            z-index: 2500;
+            pointer-events: none;
+            transition: all 250ms ease;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            opacity: 0;
+        }
+        
+        #select.open {
+            width: 100%;
+            height: 32rem;
+            pointer-events: auto;
+            opacity: 1;
+        }
+        
+        #select div {
+            height: 6rem;
+            padding: 0 2rem 0 6rem;
+            line-height: 6rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+        }
+        
+        #select div.selected:after {
+            opacity: 1;
+        }
+        
+        #select div:before {
+            content: "";
+            display: block;
+            width: 3rem;
+            height: 3rem;
+            border: var(--color-border) 1px solid;
+            border-radius: 4px;
+            position: absolute;
+            top: 50%;
+            left: 1.5rem;
+            transform: translateY(-50%);
+            background: #FFF;
+        }
+        
+        #select div:after {
+            content: "";
+            display: block;
+            width: 3rem;
+            height: 3rem;
+            position: absolute;
+            top: 50%;
+            left: 1.5rem;
+            transform: translateY(-50%);
+            background: url(/images/icons/check.svg) no-repeat center center;
+            background-size: 16px 16px;
+            opacity: 0;
+        }
+        
+        #select div:hover {
+            background: var(--color-bg);
+        }
+        
+        #select div:empty:after {
+            content: "No Name";
+            opacity: .5;
+        }
+        
+        #select.open + .shadow {
+            display: block;
+        }
+        
+        .shadow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            display: none;
+        }
+        </style>
+        <div class="btn" on-tap="_open">
+            <small>
+                Filter [[kind]]s
+            </small>
+            <span>
+                [[_displayTitle(selected, options, kind, options.*)]]
+            </span>
+            <div id="select">
+                <div on-tap="_select" on-tap="_select" class$="[[_isSelected(selected, 0, selected.*)]]">No [[kind]]</div>
+                <template is="dom-repeat" items="[[options]]" filter="_filter" observe="selected" sort="_sort">
+                    <div on-tap="_select" class$="[[_isSelected(selected, item.id, selected.*)]]">[[item.title]]</div>
+                </template>
+            </div>
+            <div class="shadow" on-tap="_close"></div>
+        </div>
+    </template>
+    <script>
+    Polymer({
+        is: 'yotilo-multiselect',
+
+        properties: {
+            kind: {
+                type: String
+            },
+            unselected: {
+                type: Object,
+                value: function() {
+                    return {
+                        0: false
+                    };
+                }
+            },
+            selected: {
+                type: Object,
+                value: function() {
+                    return {
+                        0: true
+                    };
+                },
+                notify: true
+            },
+            options: {
+                type: Array,
+                value: []
+            }
+        },
+
+        ready: function() {
+
+        },
+
+        _open: function() {
+            this.toggleClass('open', true, this.$.select);
+        },
+
+        _close: function(e) {
+            e.stopPropagation();
+            this.toggleClass('open', false, this.$.select);
+        },
+
+        _select: function(e) {
+            e.stopPropagation();
+
+            if (e.model) {
+                var id = e.model.__data__.item.id;
+            } else {
+                var id = 0
+            }
+
+            if ( typeof this.selected[id] == 'undefined' || this.selected[id]) {
+                this.set('selected.' + id, false);
+            } else {
+                this.set('selected.' + id, true);
+            }
+        },
+
+        _isSelected: function(selected, id) {
+
+            if (typeof selected[id] == 'undefined' || selected[id]) {
+                return 'selected';
+            } else {
+                return '';
+            }
+        },
+
+        _displayTitle: function(selected, options, kind) {
+
+            var title = false;
+
+            options.forEach(function(val, key) {
+                if (val.id == selected) {
+                    title = val.title;
+                }
+            });
+
+            if (title) {
+                return title;
+            } else {
+                return 'All ' + kind + 's';
+            }
+        },
+
+        _filter: function(item) {
+            return item.state == 1;
+        },
+
+        _sort: function(a, b) {
+            return a.title > b.title;
+        }
+    });
+    </script>
+</dom-module>

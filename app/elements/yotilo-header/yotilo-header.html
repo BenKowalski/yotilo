@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../yotilo-multiselect/yotilo-multiselect.html">
 <dom-module id="yotilo-header">
     <template>
         <style>
@@ -40,28 +41,61 @@
             line-height: 24px;
             color: #333;
         }
+
+        .container {
+            max-width: 128rem;
+            margin:0 auto;
+            background:red;
+        }
+
+        .col {
+            width:25%;
+            float:left;
+        }
+
         </style>
-        <nav>
-            <ul>
-                <li>
-                    <a href="#" on-tap="_openProjectsOverlay">
-                        Projects
-                    </a>
-                </li>
-                <li>
-                    <a href="#" on-tap="_openTasksOverlay">
-                        Tasks
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <div class="container cf">
+            <div class="col">
+                <yotilo-multiselect kind="project" selected="{{projectsSelected}}" options="[[projects]]"></yotilo-multiselect>
+            </div>
+            <div class="col">
+                <yotilo-multiselect kind="task" selected="{{taskssSelected}}" options="[[tasks]]"></yotilo-multiselect>
+            </div>
+            <div class="col">
+                &nbsp;
+            </div>
+            <div class="col">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#" on-tap="_openProjectsOverlay">
+                                Projects
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" on-tap="_openTasksOverlay">
+                                Tasks
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
     </template>
     <script>
     Polymer({
         is: 'yotilo-header',
 
         properties: {
-
+            projectsSelected: {
+                type: Object,
+                notify: true
+            },
+            tasksSelected: {
+                type: Object,
+                notify: true
+            }
         },
 
         ready: function() {
