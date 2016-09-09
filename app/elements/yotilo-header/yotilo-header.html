@@ -59,7 +59,7 @@
                 <yotilo-multiselect kind="project" selected="{{projectsSelected}}" options="[[projects]]"></yotilo-multiselect>
             </div>
             <div class="col">
-                <yotilo-multiselect kind="task" selected="{{taskssSelected}}" options="[[tasks]]"></yotilo-multiselect>
+                <yotilo-multiselect kind="task" selected="{{tasksSelected}}" options="[[tasks]]"></yotilo-multiselect>
             </div>
             <div class="col">
                 &nbsp;
@@ -96,6 +96,15 @@
                 type: Object,
                 notify: true
             }
+        },
+
+        observers: [
+            '_test(projectssSelected, tasksSelected, projectssSelected.*, tasksSelected.*)'
+        ],
+
+        _test: function(projectsSelected, tasksSelected, change1, change2) {
+            console.log('Test');
+            console.log(projectsSelected, tasksSelected);
         },
 
         ready: function() {

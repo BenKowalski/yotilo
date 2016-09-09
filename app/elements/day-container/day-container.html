@@ -84,6 +84,12 @@
             total: {
                 type: Number,
                 value: 0
+            },
+            projectsSelected: {
+                type: Object
+            },
+            tasksSelected: {
+                type: Object
             }
         },
 
@@ -92,11 +98,16 @@
         },
 
         observers: [
-            '_calculateTotal(data, data.*)'
+            '_calculateTotal(data, data.*)',
+            '_test(projectssSelected.*, tasksSelected.*)'
         ],
 
         ready: function() {
 
+        },
+
+        _test: function(projectsSelected, tasksSelected) {
+            console.log(projectsSelected, tasksSelected);
         },
 
         _initDay: function() {
