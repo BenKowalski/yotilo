@@ -11,7 +11,7 @@
         </style>
         <iron-localstorage name="startday" value="{{startday}}" on-iron-localstorage-load-empty="_initStartDay"></iron-localstorage>
         <template is="dom-repeat" items="{{days}}">
-            <day-container id$="day-[[item]]" day="[[item]]" projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]"></day-container>
+            <day-container id$="day-[[item]]" day="[[item]]" initialCount="1" projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]"></day-container>
         </template>
     </template>
     <script>

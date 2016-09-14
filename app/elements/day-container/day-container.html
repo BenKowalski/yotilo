@@ -63,8 +63,8 @@
                 Add Entry
             </button>
         </header>
-        <template is="dom-repeat" items="{{data}}" sort="_sort">
-            <time-entry data="{{item}}" projects="[[projects]]" tasks="[[tasks]]"></time-entry>
+        <template is="dom-repeat" initialCount="1" items="{{data}}" as="time" sort="_sort" filter="{{_filter(projectsSelected.*, tasksSelected.*)}}">
+            <time-entry data="{{time}}" projects="[[projects]]" tasks="[[tasks]]"></time-entry>
         </template>
     </template>
     <script>
@@ -99,15 +99,15 @@
 
         observers: [
             '_calculateTotal(data, data.*)',
-            '_test(projectssSelected.*, tasksSelected.*)'
+            '_filtersChanged(projectsSelected.*, tasksSelected.*)'
         ],
 
         ready: function() {
 
         },
 
-        _test: function(projectsSelected, tasksSelected) {
-            console.log(projectsSelected, tasksSelected);
+        _filtersChanged: function(projectsSelectedChange, tasksSelectedChange) {
+
         },
 
         _initDay: function() {
@@ -158,6 +158,24 @@
             return a.createdAt > b.createdAt;
         },
 
+        _filter: function(projectsSelectedChange, tasksSelectedChange) {
+
+            var projectsFilter = projectsSelectedChange.base;
+            var tasksFilter = tasksSelectedChange.base;
+
+            return function(time) {
+
+                if (typeof projectsFilter[time.project] == 'undefined' || projectsFilter[time.project]) {
+                    if (typeof tasksFilter[time.task] == 'undefined' || tasksFilter[time.task]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return false;
+            };
+        },
+
         _calculateTotal: function(data, changeRecord) {
 
             var durations = {
@@ -169,13 +187,13 @@
             data.forEach(function(val, key) {
                 durations.total += val.duration;
 
-                if( !durations.projects[val.project] ) {
+                if (!durations.projects[val.project]) {
                     durations.projects[val.project] = val.duration;
                 } else {
                     durations.projects[val.project] += val.duration
                 }
 
-                if( !durations.tasks[val.task] ) {
+                if (!durations.tasks[val.task]) {
                     durations.tasks[val.task] = val.duration;
                 } else {
                     durations.tasks[val.task] += val.duration
