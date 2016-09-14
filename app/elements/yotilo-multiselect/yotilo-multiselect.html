@@ -229,13 +229,16 @@
                 selectedBase = selected.base,
                 optionsBase = options.base;
 
-            optionsBase.forEach(function(val, key) {
-                if (typeof selectedBase[val.id] == 'undefined' || selectedBase[val.id]) {
-                    selectedCount++;
-                }
+            if (optionsBase) {
 
-                count++;
-            });
+                optionsBase.forEach(function(val, key) {
+                    if (typeof selectedBase[val.id] == 'undefined' || selectedBase[val.id]) {
+                        selectedCount++;
+                    }
+
+                    count++;
+                });
+            }
 
             if (typeof selectedBase[0] == 'undefined' || selectedBase[0]) {
                 selectedCount++;
