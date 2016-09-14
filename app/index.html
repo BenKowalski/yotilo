@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
-          <yotilo-header projects="[[projects]]" tasks="[[tasks]]" projectsSelected="{{projectsSelected}}" tasksSelected="{{tasksSelected}}"></yotilo-header>
+          <yotilo-header projects="[[projects]]" tasks="[[tasks]]" projects-selected="{{projectsSelected}}" tasks-selected="{{tasksSelected}}"></yotilo-header>
 
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
             <section data-route="home">
@@ -78,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 This project is developed in the open and not ready yet. Stay tuned.
               </div>
               <yotilo-statistics projects="[[projects]]" tasks="[[tasks]]"></yotilo-statistics>
-              <days-list projects="[[projects]]" tasks="[[tasks]]" projectsSelected="[[projectsSelected]]" tasksSelected="[[tasksSelected]]">
+              <days-list projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]">
               </days-list>
             </section>
           </iron-pages>
