@@ -63,7 +63,7 @@
                 Add Entry
             </button>
         </header>
-        <template is="dom-repeat" items="{{data}}">
+        <template is="dom-repeat" items="{{data}}" sort="_sort">
             <time-entry data="{{item}}" projects="[[projects]]" tasks="[[tasks]]"></time-entry>
         </template>
     </template>
@@ -154,9 +154,11 @@
             }.bind(this));
         },
 
+        _sort: function(a, b) {
+            return a.createdAt > b.createdAt;
+        },
+
         _calculateTotal: function(data, changeRecord) {
-
-
 
             var durations = {
                 total: 0,
