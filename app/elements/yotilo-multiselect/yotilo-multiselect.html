@@ -150,7 +150,7 @@
                 Filter [[kind]]s
             </small>
             <span>
-                [[_displayTitle(selected, options, kind, options.*)]]
+                [[_displayTitle(selected.*, options.*, kind)]]
             </span>
             <div id="select">
                 <div on-tap="_select" on-tap="_select" class$="[[_isSelected(selected, 0, selected.*)]]">No [[kind]]</div>
@@ -206,7 +206,7 @@
                 var id = 0
             }
 
-            if ( typeof this.selected[id] == 'undefined' || this.selected[id]) {
+            if (typeof this.selected[id] == 'undefined' || this.selected[id]) {
                 this.set('selected.' + id, false);
             } else {
                 this.set('selected.' + id, true);
@@ -224,16 +224,29 @@
 
         _displayTitle: function(selected, options, kind) {
 
-            var title = false;
+            var count = 1,
+                selectedCount = 0,
+                selectedBase = selected.base,
+                optionsBase = options.base;
 
-            options.forEach(function(val, key) {
-                if (val.id == selected) {
-                    title = val.title;
+            optionsBase.forEach(function(val, key) {
+                if (typeof selectedBase[val.id] == 'undefined' || selectedBase[val.id]) {
+                    selectedCount++;
                 }
+
+                count++;
             });
 
-            if (title) {
-                return title;
+            if (typeof selectedBase[0] == 'undefined' || selectedBase[0]) {
+                selectedCount++;
+            }
+
+            if (count != selectedCount) {
+                if (selectedCount == 1) {
+                    return selectedCount + ' ' + kind;
+                } else {
+                    return selectedCount + ' ' + kind + 's';
+                }
             } else {
                 return 'All ' + kind + 's';
             }
