@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../yotilo-multiselect/yotilo-multiselect.html">
+<link rel="import" href="../yotilo-datepicker/yotilo-datepicker.html">
 <dom-module id="yotilo-header">
     <template>
         <style>
@@ -62,7 +63,7 @@
                 <yotilo-multiselect kind="task" selected="{{tasksSelected}}" options="[[tasks]]"></yotilo-multiselect>
             </div>
             <div class="col">
-                &nbsp;
+                <yotilo-datepicker  start-date="{{startDate}}" end-date="{{endDate}}"></yotilo-datepicker>
             </div>
             <div class="col">
                 <nav>
@@ -94,6 +95,14 @@
             },
             tasksSelected: {
                 type: Object,
+                notify: true
+            },
+            startDate: {
+                type: Number,
+                notify: true
+            },
+            endDate: {
+                type: Number,
                 notify: true
             }
         },

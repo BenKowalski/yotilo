@@ -98,7 +98,7 @@
         },
 
         observers: [
-            '_calculateTotal(data, data.*, projectsSelected.*, tasksSelected.*)',
+            /* '_calculateTotal(data, data.*, projectsSelected.*, tasksSelected.*)', */
             '_filtersChanged(projectsSelected.*, tasksSelected.*)'
         ],
 
@@ -187,7 +187,7 @@
                 tasks: {}
             };
 
-            data.forEach(function(val, key) {
+            /*data.forEach(function(val, key) {
 
                 if (typeof projectsFilter[val.project] == 'undefined' || projectsFilter[val.project]) {
                     if (typeof tasksFilter[val.task] == 'undefined' || tasksFilter[val.task]) {
@@ -211,8 +211,8 @@
                         }
                     }
                 }
-
-            });
+                
+            });*/
 
             this.fire('set-durations', {
                 day: this.day,
