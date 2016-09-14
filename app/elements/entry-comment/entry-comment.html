@@ -1,0 +1,126 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="entry-comment">
+    <template>
+        <style>
+        :host {
+            position: relative;
+            margin: 1rem 0 0 0;
+            display: block;
+        }
+        
+        :host:hover div {
+            background:#FFF;
+        }
+        
+        div {
+            margin:0 0 0 1rem;
+            position: relative;
+            display: inline-block;
+            height: 6rem;
+            border: transparent 1px solid;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            font-size: 12px;
+            line-height: 2rem;
+            cursor: pointer;
+            transition: all 250ms ease;
+            font-family: Lato, sans-serif;
+            box-sizing:border-box;
+        }
+
+        span {
+            display:block;
+            position: relative;
+            top:50%;
+            transform:translateY(-50%);
+        }
+        
+        div:hover {
+            border-color: var(--color-border);
+            box-shadow: var(--shadow);
+        }
+        
+        div:hover button {
+            opacity: 1;
+        }
+        
+        input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 6rem;
+            width: 3rem;
+            background: #FFF;
+            padding: 0;
+            border: var(--color-border) 1px solid;
+            padding: 0 2rem;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            outline: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 250ms ease;
+            font-size: 12px;
+            font-family: Lato, sans-serif;
+        }
+        
+        input:focus {
+            opacity: 1;
+            pointer-events: auto;
+            width: 40rem;
+        }
+        
+        input:focus + div {
+            opacity: 0;
+        }
+        
+        </style>
+        <input id="input" type="text" value$="[[value]]" on-blur="_save" on-keydown="_keydown" />
+        <div on-tap="_openInput">
+            <span>
+                [[_displayValue(value)]]
+            </span>
+        </div>
+    </template>
+    <script>
+    Polymer({
+        is: 'entry-comment',
+
+        properties: {
+            value: {
+                type: String,
+                value: '',
+                notify: true
+            }
+        },
+
+        ready: function() {
+
+        },
+
+        _displayValue: function(value) {
+            if(value == '') {
+                return 'No comment';
+            } else {
+                return value;
+            }
+        },
+
+        _openInput: function() {
+            this.$.input.focus();
+        },
+
+        _save: function(e) {
+
+            var tmp = e.target.value;
+            this.value = tmp;
+        },
+
+        _keydown: function(e) {
+            if (e.keyCode == 13) {
+                e.target.blur();
+            }
+        }
+    });
+    </script>
+</dom-module>
