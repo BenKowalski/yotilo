@@ -1,0 +1,275 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="yotilo-datepicker-month">
+    <template>
+        <style>
+        :host {
+            position: relative;
+            margin: 1rem 0 0 0;
+            display: block;
+        }
+        
+        :host:hover {}
+        
+        .label {
+            font-size: 12px;
+            text-align: center;
+            line-height: 2rem;
+        }
+        
+        header {
+            position: relative;
+            line-height: 6rem;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        header button {
+            width: 3rem;
+            height: 3rem;
+            overflow: hidden;
+            text-indent: -9999px;
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            border-radius: 4px;
+            border: var(--color-border) 1px solid;
+            box-shadow: var(--shadow);
+            background: #FFF url(/images/icons/arrow-left.svg) no-repeat center center;
+            background-size: 16px 16px;
+            outline: none;
+        }
+        
+        header button:hover {}
+        
+        header button.next {
+            left: auto;
+            right: 1.5rem;
+            background-image: url(/images/icons/arrow-right.svg);
+        }
+        
+        section {
+            padding:0 1.5rem;
+        }
+
+        section span {
+            width: 14.285714286%;
+            float: left;
+            text-align: center;
+            font-size: 10px;
+            line-height: 4rem;
+        }
+        
+        section div {
+            width: 14.285714286%;
+            float: left;
+            text-align: center;
+            font-size: 12px;
+            line-height: 4rem;
+            -webkit-font-smoothing:antialiased;
+            border-radius: 4px;
+            border:transparent 1px solid;
+            height:4rem;
+            box-sizing: border-box;
+        }
+        
+        section div:hover {
+            background: var(--color-bg);
+        }
+
+        section div.notDisplayMonth {
+            color:var(--color-border);
+        }
+
+        section div.inPeriod {
+            border-color:var(--color-border);
+        }
+
+        section div.dateNow {
+            border-color:var(--color-blue);
+        }
+
+        </style>
+        <div class="label">
+            [[label]]
+        </div>
+        <header>
+            [[_displayMonth(monthToDisplay)]]
+            <button class="prev" on-tap="_prevMonth">
+                Previous Month
+            </button>
+            <button class="next" on-tap="_nextMonth">
+                Next Month
+            </button>
+        </header>
+        <section>
+            <span>Sun</span>
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+            <template is="dom-repeat" items="[[days]]">
+                <div data-test$="[[item]]" class$="[[_getClass(item, startDate, endDate)]]" on-tap="_setDate">
+                    [[_displayDate(item)]]
+                </div>
+            </template>
+        </section>
+    </template>
+    <script>
+    Polymer({
+        is: 'yotilo-datepicker-month',
+
+        properties: {
+            startDate: {
+                type: Number,
+                notify: true,
+                observer: '_startDateChanged'
+            },
+            endDate: {
+                type: Number,
+                notify: true,
+                observer: '_endDateChanged'
+            },
+            chooseStartDate: {
+                type: Boolean,
+                value: false
+            },
+            label: {
+                type: String,
+                value: ''
+            },
+            monthToDisplay: {
+                type: Number,
+                value: 0,
+                observer: '_monthToDisplayChanged'
+            },
+            days: {
+                type: Array,
+                value: []
+            }
+        },
+
+        ready: function() {
+
+        },
+
+        _setDate: function(e) {
+
+            var newDate = e.model.__data__.item;
+
+            if(this.chooseStartDate) {
+                this.startDate = newDate;
+
+                if( this.endDate < this.startDate) {
+                    this.endDate = this.startDate;
+                }
+            } else {
+                this.endDate = newDate;
+
+                if( this.startDate > this.endDate) {
+                    this.startDate = this.endDate;
+                }
+            }
+        },
+
+        _startDateChanged: function(startDate) {
+
+            if (this.chooseStartDate) {
+                var t2 = new Date(startDate);
+                this.monthToDisplay = new Date(t2.getFullYear(), t2.getMonth(), 1, 0, 0, 0).getTime();
+            }
+        },
+
+        _endDateChanged: function(endDate) {
+
+            if (!this.chooseStartDate) {
+                var t2 = new Date(endDate);
+                this.monthToDisplay = new Date(t2.getFullYear(), t2.getMonth(), 1, 0, 0, 0).getTime();
+            }
+        },
+
+        _monthToDisplayChanged: function(monthToDisplay) {
+            this.set('days', []);
+
+            var displayStartDate = monthToDisplay;
+
+            if( new Date(monthToDisplay).getDay() > 0 ) {
+                for(var i = 0; i < new Date(monthToDisplay).getDay(); i++) {
+                    displayStartDate = this._prevDay(displayStartDate);
+                }
+            }
+
+            for (var i = 1; i <= (5 * 7); i++) {
+                this.push('days', displayStartDate);
+                displayStartDate = this._nextDay(displayStartDate);
+            }
+        },
+
+        _displayMonth: function(monthToDisplay) {
+
+            var dateTmp = new Date(monthToDisplay),
+                monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            return monthArray[dateTmp.getMonth()] + ' ' + dateTmp.getFullYear();
+        },
+
+        _displayDate: function(date) {
+            
+            var dateTmp = new Date(date);
+            return dateTmp.getDate();
+        },
+
+        _getClass: function(item, startDate, endDate) {
+
+            var classes = '';
+
+            if( new Date(item).getMonth() != new Date(this.monthToDisplay).getMonth() ) {
+                classes += ' notDisplayMonth';
+            }
+
+            if( item >= startDate && item <= endDate) {
+                classes += ' inPeriod';
+            }
+
+            if( item == startDate && this.chooseStartDate) {
+                classes += ' dateNow';
+            }
+
+            if( item == endDate && !this.chooseStartDate) {
+                classes += ' dateNow';
+            }
+
+            return classes;
+        },
+
+        _sort: function(a, b) {
+            return false;
+            return a.date < b.date;
+        },
+
+        _prevMonth: function(e) {
+            var t2 = new Date(this.monthToDisplay - (15 * 24 * 60 * 60 * 1000));
+            this.monthToDisplay = new Date(t2.getFullYear(), t2.getMonth(), 1, 0, 0, 0).getTime();
+        },
+
+        _nextMonth: function(e) {
+            var t2 = new Date(this.monthToDisplay + (40 * 24 * 60 * 60 * 1000));
+            this.monthToDisplay = new Date(t2.getFullYear(), t2.getMonth(), 1, 0, 0, 0).getTime();
+        },
+
+        _prevDay: function(day) {
+            var t2 = new Date(day - 86400000 + 7200000);
+            var t3 = new Date(t2.getFullYear(), t2.getMonth(), t2.getDate(), 0, 0, 0).getTime();
+            return t3;
+        },
+
+        _nextDay: function(day) {
+            var t2 = new Date(day + 86400000 + 7200000);
+            t3 = new Date(t2.getFullYear(), t2.getMonth(), t2.getDate(), 0, 0, 0).getTime();
+            return t3;
+        },
+
+
+    });
+    </script>
+</dom-module>
