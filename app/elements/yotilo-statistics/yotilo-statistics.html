@@ -170,11 +170,18 @@
                 value: function(){
                     return {};
                 }
+            },
+            startDate: {
+                type: Number
+            },
+            endDate: {
+                type: Number
             }
         },
 
         observers: [
-            '_calculateTotal(daysTotal, daysTotal.*)'
+            '_calculateTotal(daysTotal, daysTotal.*)',
+            '_periodChanged(startDate, endDate)'
         ],
 
         ready: function() {
@@ -189,6 +196,16 @@
             } else {
                 return '';
             }
+        },
+
+        _periodChanged: function(startDate, endDate) {
+
+            _.each(this.daysTotal, function(val, key) {
+                if( key < startDate || key > endDate) {
+                    delete this.daysTotal[key];
+                    this.notifyPath('daysTotal.' + key, null);
+                }
+            }.bind(this));
         },
 
         _displayTotal: function(total) {
