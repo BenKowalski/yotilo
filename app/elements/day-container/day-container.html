@@ -8,6 +8,10 @@
             display: block;
             margin-bottom: 8rem;
         }
+
+        :host:hover button {
+            opacity:1;
+        }
         
         header {
             height: 8rem;
@@ -49,15 +53,20 @@
             letter-spacing: .05em;
             font-weight: 600;
             outline: none;
+            opacity:0;
+            cursor:pointer;
+            transition:all 240ms ease;
         }
         </style>
         <iron-localstorage name$="day-[[day]]" value="{{data}}" on-iron-localstorage-load-empty="_initDay"></iron-localstorage>
         <header class="cf">
             <h3>
-                [[_displayDay(day)]] 
-                <span>
-                    [[_displayTotal(total)]] total
-                </span>
+                [[_displayDay(day)]]
+                <template is="dom-if" if="[[_isTotal(total)]]">
+                    <span>
+                        [[_displayTotal(total)]] total
+                    </span>
+                </template>
             </h3>
             <button on-tap="_newEntry">
                 Add Entry
@@ -104,6 +113,10 @@
 
         ready: function() {
 
+        },
+
+        _isTotal: function(total) {
+            return total > 0;
         },
 
         _filtersChanged: function(projectsSelectedChange, tasksSelectedChange) {
