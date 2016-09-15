@@ -183,6 +183,7 @@
         },
 
         _calculateClass: function(total) {
+
             if( total == 0) {
                 return 'hidden';
             } else {
@@ -228,7 +229,9 @@
                 total += daysTotal[id].total;
 
                 for (var projectID in daysTotal[id].projects ) {
-                    if( !projectsTotals[projectID] ) {
+
+                    if( typeof projectsTotals[projectID] == 'undefined' ) {
+
                         if( daysTotal[id].projects[projectID] > 0) {
                             projectsTotals[projectID] = {
                                 id: projectID,
@@ -236,15 +239,22 @@
                             }
                         }
                     } else {
-                         projectsTotals[projectID] += daysTotal[id].projects[projectID];
+                         projectsTotals[projectID].total += daysTotal[id].projects[projectID];
                     }
                 }
 
                 for (var taskID in daysTotal[id].tasks ) {
-                    if( !tasksTotals[taskID] ) {
-                        tasksTotals[taskID] = daysTotal[id].tasks[taskID];
+
+                    if( typeof tasksTotals[taskID] == 'undefined' ) {
+
+                        if( daysTotal[id].tasks[taskID] > 0) {
+                            tasksTotals[taskID] = {
+                                id: taskID,
+                                total: daysTotal[id].tasks[taskID]
+                            }
+                        }
                     } else {
-                         tasksTotals[taskID] += daysTotal[id].tasks[taskID];
+                         tasksTotals[taskID].total += daysTotal[id].tasks[taskID];
                     }
                 }
             }
