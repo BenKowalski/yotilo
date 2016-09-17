@@ -197,6 +197,16 @@
         },
 
         _optionsChanged: function(optionsChange) {
+
+            optionsChange.base.forEach(function(val, key) {
+                console.log(val.title, val.state);
+                if( val.state == 2 ) {
+                    this.set('selected.' + val.id, false);
+                } else {
+                    this.set('selected.' + val.id, true);
+                }
+            }.bind(this));
+
             this.helper = new Date().getTime();
         },
 
@@ -248,7 +258,9 @@
                         selectedCount++;
                     }
 
-                    count++;
+                    if( val.state == 1) {
+                        count++;
+                    }
                 });
             }
 
