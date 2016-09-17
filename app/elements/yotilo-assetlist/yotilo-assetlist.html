@@ -95,11 +95,6 @@
             border-radius: 4px;
             padding: 2rem;
             background: var(--color-bg);
-            display: none;
-        }
-        
-        section.active {
-            display: block;
         }
         
         section p {
@@ -126,11 +121,14 @@
                     </button>
                 </div>
             </template>
-            <section id="empty">
-                <p>
-                    No [[asset]] are added. Create one by clicking the button below.
-                </p>
-            </section>
+
+            <template is="dom-if" if="[[_emptyActive(data.*)]]">
+                <section id="empty">
+                    <p>
+                        No [[asset]] are added. Create one by clicking the button below.
+                    </p>
+                </section>
+            </template>
             <button class="new" on-tap="_newEntry">
                 Add Entry
             </button>
@@ -148,10 +146,13 @@
                     </button>
                 </div>
             </template>
-            <section id="empty-archived">
-                <p>
-                    No archived [[asset]].
-                </p>
+            <template is="dom-if" if="[[_emptyArchived(data.*)]]">
+                <section id="empty-archived">
+                    <p>
+                        No archived [[asset]].
+                    </p>
+                </section>
+            </template>
         </template>
     </template>
     <script>
@@ -173,27 +174,41 @@
             }
         },
 
-        observers: [
-            '_dataChanged(data, data.*)'
-        ],
-
         ready: function() {
 
         },
 
-        _dataChanged: function(data) {
+        _emptyActive: function(dataChange) {
 
             var count = 0;
 
-            data.forEach(function(val, key) {
+            dataChange.base.forEach(function(val, key) {
                 if (val.state == 1) {
                     count++;
                 }
             }.bind(this));
+
             if (count > 0) {
-                this.toggleClass('active', false, this.$$('#empty'));
+                return false;
             } else {
-                this.toggleClass('active', true, this.$$('#empty'));
+                return true;
+            }
+        },
+
+        _emptyArchived: function(dataChange) {
+
+            var count = 0;
+
+            dataChange.base.forEach(function(val, key) {
+                if (val.state != 1) {
+                    count++;
+                }
+            }.bind(this));
+
+            if (count > 0) {
+                return false;
+            } else {
+                return true;
             }
         },
 
