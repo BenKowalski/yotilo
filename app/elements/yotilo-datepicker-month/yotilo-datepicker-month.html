@@ -159,17 +159,19 @@
             var newDate = e.model.__data__.item;
 
             if(this.chooseStartDate) {
+
+                if( this.endDate < newDate) {
+                    this.endDate = newDate;
+                }
+
                 this.startDate = newDate;
-
-                if( this.endDate < this.startDate) {
-                    this.endDate = this.startDate;
-                }
             } else {
-                this.endDate = newDate;
 
-                if( this.startDate > this.endDate) {
-                    this.startDate = this.endDate;
+                if( this.startDate > newDate) {
+                    this.startDate = newDate;
                 }
+
+                this.endDate = newDate;
             }
         },
 
