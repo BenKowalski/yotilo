@@ -89,7 +89,14 @@
         },
 
         ready: function() {
+            this.listen(document.body, 'asset-deleted', '_assetDeleted');
+        },
 
+        _assetDeleted: function(e) {
+
+            if( this.data.project == e.detail.id || this.data.task == e.detail.id) {
+                this._delete();
+            } 
         },
 
         _selectOption: function(e) {

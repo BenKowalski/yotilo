@@ -144,7 +144,7 @@
                         Activate Entry
                     </button>
                     <button on-tap="_delete">
-                        Delete Entry
+                        Delete (with all time entries)
                     </button>
                 </div>
             </template>
@@ -278,6 +278,10 @@
         _delete: function(e) {
 
             var idToDelete = e.model.__data__.item.id;
+
+            this.fire('asset-deleted', {
+                id: idToDelete
+            });
 
             this.data.forEach(function(val, key) {
                 if( val.id == idToDelete ) {
