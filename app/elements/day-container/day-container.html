@@ -113,8 +113,7 @@
         },
 
         observers: [
-            '_calculateTotal(data, data.*, projectsSelected.*, tasksSelected.*)',
-            '_filtersChanged(projectsSelected.*, tasksSelected.*)'
+            '_calculateTotal(data, data.*, projectsSelected.*, tasksSelected.*)'
         ],
 
         ready: function() {
@@ -123,10 +122,6 @@
 
         _isTotal: function(total) {
             return total > 0;
-        },
-
-        _filtersChanged: function(projectsSelectedChange, tasksSelectedChange) {
-
         },
 
         _initDay: function() {
