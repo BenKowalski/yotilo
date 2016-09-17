@@ -18,6 +18,24 @@
             font-weight: 600;
             outline: none;
             cursor: pointer;
+            transition: all 240ms ease;
+        }
+        
+        header {
+            margin-bottom: 3rem;
+            height: 5rem;
+        }
+        
+        header button {
+            box-shadow: none;
+            float: left;
+            margin-right: 1rem;
+            color: var(--color-border);
+        }
+        
+        header button.active {
+            border-color: var(--color-blue);
+            color: var(--color-blue);
         }
         
         div {
@@ -58,27 +76,83 @@
             transform: translateY(-50%);
             transition: all 250ms ease;
         }
+
+        div button + button {
+            right:20rem;
+        }
         
         div button:hover {
             opacity: 1;
         }
         
         button.new {
-            margin: 1.5rem 0 0 0;
+            margin: 3rem 0 0 0;
+        }
+        
+        section {
+            border: var(--color-bg) 1px solid;
+            background: #FFF;
+            border-radius: 4px;
+            padding: 2rem;
+            background: var(--color-bg);
+            display: none;
+        }
+        
+        section.active {
+            display: block;
+        }
+        
+        section p {
+            font-size: 14px;
+            line-height: 2rem;
+            text-align: center;
         }
         </style>
         <iron-localstorage name$="[[asset]]" value="{{data}}" on-iron-localstorage-load-empty="_initAsset"></iron-localstorage>
-        <template is="dom-repeat" items="{{data}}" filter="_filter" observe="state" sort="_sort">
-            <div>
-                <input type="text" value$="{{item.title}}" placeholder="No Name" on-blur="_save" on-keydown="_keydown">
-                <button on-tap="_archive">
-                    Archive Entry
-                </button>
-            </div>
+        <header class="cf">
+            <button class$="[[_classActive(0, toShow)]]" on-tap="_toggleArchivedTrue">
+                Active [[asset]] ([[_getActiveCount(data.*)]])
+            </button>
+            <button class$="[[_classActive(1, toShow)]]" on-tap="_toggleArchivedFalse">
+                Archived [[asset]] ([[_getArchivedCount(data.*)]])
+            </button>
+        </header>
+        <template is="dom-if" if="[[toShow]]">
+            <template is="dom-repeat" items="{{data}}" filter="_filter" observe="state" sort="_sort">
+                <div>
+                    <input type="text" value$="{{item.title}}" placeholder="No Name" on-blur="_save" on-keydown="_keydown">
+                    <button on-tap="_archive">
+                        Archive Entry
+                    </button>
+                </div>
+            </template>
+            <section id="empty">
+                <p>
+                    No [[asset]] are added. Create one by clicking the button below.
+                </p>
+            </section>
+            <button class="new" on-tap="_newEntry">
+                Add Entry
+            </button>
         </template>
-        <button class="new" on-tap="_newEntry">
-            Add Entry
-        </button>
+
+        <template is="dom-if" if="[[!toShow]]">
+            <template is="dom-repeat" items="{{data}}" filter="_filterArchived" observe="state" sort="_sort">
+                <div>
+                    <input type="text" value$="{{item.title}}" placeholder="No Name" on-blur="_save" on-keydown="_keydown">
+                    <button on-tap="_activate">
+                        Activate Entry
+                    </button>
+                    <button on-tap="_delete">
+                        Delete Entry
+                    </button>
+                </div>
+            </template>
+            <section id="empty-archived">
+                <p>
+                    No archived [[asset]].
+                </p>
+        </template>
     </template>
     <script>
     Polymer({
@@ -92,11 +166,81 @@
                 type: Array,
                 value: [],
                 notify: true
+            },
+            toShow: {
+                type: Boolean,
+                value: true
             }
         },
 
+        observers: [
+            '_dataChanged(data, data.*)'
+        ],
+
         ready: function() {
 
+        },
+
+        _dataChanged: function(data) {
+
+            var count = 0;
+
+            data.forEach(function(val, key) {
+                if (val.state == 1) {
+                    count++;
+                }
+            }.bind(this));
+            if (count > 0) {
+                this.toggleClass('active', false, this.$$('#empty'));
+            } else {
+                this.toggleClass('active', true, this.$$('#empty'));
+            }
+        },
+
+        _getActiveCount: function(dataChange) {
+            var data = dataChange.base,
+                count = 0;
+
+            data.forEach(function(val, key) {
+                if (val.state == 1) {
+                    count++;
+                }
+            }.bind(this));
+
+            return count;
+        },
+
+        _getArchivedCount: function(dataChange) {
+
+            var data = dataChange.base,
+                count = 0;
+
+            data.forEach(function(val, key) {
+                if (val.state != 1) {
+                    count++;
+                }
+            }.bind(this));
+
+            return count;
+        },
+
+        _classActive: function(toControl, toShow) {
+
+            toControl = [true, false][toControl];
+
+            if (toControl == toShow) {
+                return 'active';
+            } else {
+                return '';
+            }
+        },
+
+        _toggleArchivedTrue: function(e) {
+            this.toShow = true;
+        },
+
+        _toggleArchivedFalse: function(e) {
+            this.toShow = false;
         },
 
         _newEntry: function() {
@@ -127,8 +271,27 @@
             e.model.set('item.state', 2);
         },
 
+        _activate: function(e) {
+            e.model.set('item.state', 1);
+        },
+
+        _delete: function(e) {
+
+            var idToDelete = e.model.__data__.item.id;
+
+            this.data.forEach(function(val, key) {
+                if( val.id == idToDelete ) {
+                    this.splice('data', key, 1);
+                }
+            }.bind(this));
+        },
+
         _filter: function(item) {
             return item.state == 1;
+        },
+
+        _filterArchived: function(item) {
+            return item.state != 1;
         },
 
         _sort: function(a, b) {

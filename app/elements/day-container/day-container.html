@@ -57,6 +57,12 @@
             cursor:pointer;
             transition:all 240ms ease;
         }
+
+        button:hover {
+            color:var(--color-blue);
+            border-color:var(--color-blue);
+        }
+        
         </style>
         <iron-localstorage name$="day-[[day]]" value="{{data}}" on-iron-localstorage-load-empty="_initDay"></iron-localstorage>
         <header class="cf">
