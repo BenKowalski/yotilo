@@ -1,0 +1,126 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+<dom-module id="yotilo-welcome">
+    <template>
+        <style>
+        :host {}
+        
+        img {
+            margin: 50px auto;
+            display: block;
+            width: 312px;
+            height: 113px;
+        }
+        
+        h1 {
+            text-align: center;
+            line-height: 5rem;
+            font-size: 26px;
+            color: var(--color-blue);
+            font-weight: 500;
+        }
+        
+        p {
+            font-size: 15px;
+            line-height: 3rem;
+            margin: 0 5rem 5rem 5rem;
+        }
+        
+        p.two {
+            column-count: 2;
+        }
+        
+        p.c {
+            text-align: center;
+            -webkit-font-smoothing: antialiased;
+            font-size: 13px;
+            line-height: 2rem;
+        }
+        
+        p.faded {
+            color: var(--color-border);
+        }
+        
+        p span {
+            color: var(--color-blue);
+        }
+        
+        div {
+            text-align: center;
+        }
+        
+        button {
+            margin: 0 auto 1rem auto;
+            height: 5rem;
+            border: var(--color-border) 1px solid;
+            background: #FFF;
+            border-radius: 4px;
+            padding: 0 2rem;
+            box-shadow: var(--shadow);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: all 240ms ease;
+        }
+        
+        button:hover {
+            color: var(--color-blue);
+            border-color: var(--color-blue);
+        }
+        </style>
+        <iron-localstorage name="popupShown" value="{{shown}}" on-iron-localstorage-load-empty="_initShown"></iron-localstorage>
+        <img src="/images/visuals/visual-1.svg" alt="Welcome to Yotilo" />
+        <h1>
+            Welcome to Yotilo
+        </h1>
+        <p class="two">
+            Yotilo means <em><span>Yo</span>ur <span>Ti</span>me<span>lo</span>g</em> and serves as a free and open source timetracking solution for everybody. Your data is saved locally in your browser and you can start right away tracking your time with the build in stopwatch function. Additionally, you'll get nice little summaries about your tracked time.
+        </p>
+        <p class="c">
+            This site uses cookies and local storage to save some of your data. By continuing to use the service, you are agreeing to our use of cookies and local storage.
+        </p>
+        <div>
+            <button on-tap="_tapped">
+                Start tracking time with Yotilo
+            </button>
+        </div>
+        <p class="c faded">
+            (This pop up shows up only once)
+        </p>
+    </template>
+    <script>
+    Polymer({
+        is: 'yotilo-welcome',
+
+        properties: {
+
+            shown: {
+                type: Boolean,
+                observer: '_shownChanged'
+            }
+        },
+
+        ready: function() {
+
+        },
+
+        _shownChanged: function(shown) {
+            if (!shown) {
+                this.fire('open-overlay');
+            }
+        },
+
+        _initShown: function() {
+            this.shown = false;
+        },
+
+        _tapped: function(e) {
+            this.shown = true;
+            this.fire('close-overlay');
+        }
+    });
+    </script>
+</dom-module>
