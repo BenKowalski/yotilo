@@ -154,8 +154,8 @@
             </span>
             <div id="select">
                 <div on-tap="_select" on-tap="_select" class$="[[_isSelected(selected, 0, selected.*)]]">No [[kind]]</div>
-                <template is="dom-repeat" items="[[options]]" filter="_filter" observe="selected" sort="_sort">
-                    <div on-tap="_select" class$="[[_isSelected(selected, item.id, selected.*)]]">[[item.title]]</div>
+                <template is="dom-repeat" items="[[options]]" filter="{{_filter(helper)}}" as="filterasset" observe="helper" sort="_sort">
+                    <div on-tap="_select" class$="[[_isSelected(selected, filterasset.id, selected.*)]]">[[filterasset.title]]</div>
                 </template>
             </div>
             <div class="shadow" on-tap="_close"></div>
@@ -181,11 +181,23 @@
             options: {
                 type: Array,
                 value: []
+            },
+            helper: {
+                type: Number,
+                value: 0
             }
         },
 
+        observers: [
+            '_optionsChanged(options.*)'
+        ],
+
         ready: function() {
 
+        },
+
+        _optionsChanged: function(optionsChange) {
+            this.helper = new Date().getTime();
         },
 
         _open: function() {
@@ -201,7 +213,7 @@
             e.stopPropagation();
 
             if (e.model) {
-                var id = e.model.__data__.item.id;
+                var id = e.model.__data__.filterasset.id;
             } else {
                 var id = 0
             }
@@ -255,8 +267,10 @@
             }
         },
 
-        _filter: function(item) {
-            return item.state == 1;
+        _filter: function(helper) {
+            return function(filterasset) {
+                return filterasset.state == 1;
+            }
         },
 
         _sort: function(a, b) {
