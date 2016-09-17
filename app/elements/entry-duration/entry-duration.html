@@ -9,7 +9,7 @@
         }
         
         :host:hover div {
-            background:#FFF;
+            background: #FFF;
         }
         
         :host.stopwatch div {
@@ -60,7 +60,7 @@
         }
         
         div {
-            margin:0 0 0 1rem;
+            margin: 0 0 0 1rem;
             position: relative;
             display: inline-block;
             height: 6rem;
@@ -84,6 +84,7 @@
         }
         
         input {
+            margin: 0 0 0 1rem;
             position: absolute;
             top: 0;
             left: 0;
@@ -107,6 +108,7 @@
             opacity: 1;
             pointer-events: auto;
             width: 12rem;
+            z-index: 100;
         }
         
         input:focus + div {
@@ -189,7 +191,9 @@
             var tmp = e.target.value.split(':');
             tmp = ((parseInt(tmp[0]) * 60) + parseInt(tmp[1])) * 60;
 
-            this.duration = tmp;
+            if (isNaN(!tmp)) {
+                this.duration = tmp;
+            }
         },
 
         _keydown: function(e) {
