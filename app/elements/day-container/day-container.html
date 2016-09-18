@@ -193,48 +193,51 @@
 
         _calculateTotal: function(data, dataChange, projectsSelectedChange, tasksSelectedChange) {
 
-            var projectsFilter = projectsSelectedChange.base;
-            var tasksFilter = tasksSelectedChange.base;
+            if( data ) {
 
-            var durations = {
-                total: 0,
-                projects: {},
-                tasks: {}
-            };
+                var projectsFilter = projectsSelectedChange.base;
+                var tasksFilter = tasksSelectedChange.base;
 
-            data.forEach(function(val, key) {
+                var durations = {
+                    total: 0,
+                    projects: {},
+                    tasks: {}
+                };
 
-                if (typeof projectsFilter[val.project] == 'undefined' || projectsFilter[val.project]) {
-                    if (typeof tasksFilter[val.task] == 'undefined' || tasksFilter[val.task]) {
+                data.forEach(function(val, key) {
 
-                        durations.total += val.duration;
+                    if (typeof projectsFilter[val.project] == 'undefined' || projectsFilter[val.project]) {
+                        if (typeof tasksFilter[val.task] == 'undefined' || tasksFilter[val.task]) {
 
-                        if (val.duration != 0) {
+                            durations.total += val.duration;
 
-                            if (!durations.projects[val.project]) {
-                                durations.projects[val.project] = val.duration;
-                            } else {
-                                durations.projects[val.project] += val.duration
-                            }
+                            if (val.duration != 0) {
+
+                                if (!durations.projects[val.project]) {
+                                    durations.projects[val.project] = val.duration;
+                                } else {
+                                    durations.projects[val.project] += val.duration
+                                }
 
 
-                            if (!durations.tasks[val.task]) {
-                                durations.tasks[val.task] = val.duration;
-                            } else {
-                                durations.tasks[val.task] += val.duration
+                                if (!durations.tasks[val.task]) {
+                                    durations.tasks[val.task] = val.duration;
+                                } else {
+                                    durations.tasks[val.task] += val.duration
+                                }
                             }
                         }
                     }
-                }
-                
-            });
+                    
+                });
 
-            this.fire('set-durations', {
-                day: this.day,
-                durations: durations
-            });
+                this.fire('set-durations', {
+                    day: this.day,
+                    durations: durations
+                });
 
-            this.set('total', durations.total);
+                this.set('total', durations.total);
+            }
         }
     });
     </script>
