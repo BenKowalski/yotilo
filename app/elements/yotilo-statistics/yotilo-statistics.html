@@ -17,6 +17,48 @@
             background:var(--color-bg);
         }
 
+
+        button {
+            height: 5rem;
+            border: var(--color-border) 1px solid;
+            background: transparent;
+            border-radius: 4px;
+            padding: 0 2rem;
+            box-shadow: var(--shadow);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: all 240ms ease;
+        }
+
+        button:hover {
+            border-color:var(--color-blue);
+            color:var(--color-blue);
+        }
+
+        header {
+            height:6rem;
+        }
+
+        header button {
+            box-shadow: none;
+            float: left;
+            margin-right: 1rem;
+            color: var(--color-border);
+            padding:0 1rem;
+            height:4rem;
+            font-size:10px;
+        }
+        
+        header button.active {
+            border-color: var(--color-blue);
+            color: var(--color-blue);
+        }
+
+
         #ratio {
             height:8rem;
         }
@@ -24,8 +66,6 @@
         #ratio > div {
             float:left;
         }
-
-
 
         #ratio > div span {
             display:block;
@@ -104,11 +144,11 @@
         #ratio > div:nth-child(14) p { color:#47A1B3; }
         #ratio > div:nth-child(14) p { color:#A147B3; }
 
-        #ratio.hidden {
+        .hidden {
             display:none;
         }
 
-        #ratio.hidden + #total {
+        .hidden + #total {
             border-top:0;
             margin:0;
             padding:0;
@@ -129,15 +169,44 @@
         </style>
 
         <object-translate data="[[ projectsTotals ]]" output="{{ projectsTotalsArray }}"></object-translate>
+        <object-translate data="[[ tasksTotals ]]" output="{{ tasksTotalsArray }}"></object-translate>
 
-        <div id="ratio" class$="[[_calculateClass(total)]]">
-            <template is="dom-repeat" items="[[projectsTotalsArray]]">
-                <div style$="width:[[_calculateWidth(item, total)]]%">
-                    <span>[[_displayTotal(item.total)]]</span>
-                    <p>[[_displayProject(item.id, projects, projects.*)]]</p>
+        <div class$="[[_calculateClass(total)]]">
+
+            <header class="cf">
+                <button class$="[[_isActive('projects', toDisplay)]]" on-tap="_toggleKindProjects">
+                    Statistics for projects
+                </button>
+                <button class$="[[_isActive('tasks', toDisplay)]]" on-tap="_toggleKindTasks">
+                    Statistics for tasks
+                </button>
+            </header>
+
+
+            <template is="dom-if" if="[[_whichKind('projects', toDisplay)]]">
+                <div id="ratio">
+                    <template is="dom-repeat" items="[[projectsTotalsArray]]">
+                        <div style$="width:[[_calculateWidth(item, total)]]%">
+                            <span>[[_displayTotal(item.total)]]</span>
+                            <p>[[_displayProject(item.id, projects, projects.*)]]</p>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+
+            <template is="dom-if" if="[[_whichKind('tasks', toDisplay)]]">
+                <div id="ratio">
+                    <template is="dom-repeat" items="[[tasksTotalsArray]]">
+                        <div style$="width:[[_calculateWidth(item, total)]]%">
+                            <span>[[_displayTotal(item.total)]]</span>
+                            <p>[[_displayTask(item.id, tasks, tasks.*)]]</p>
+                        </div>
+                    </template>
                 </div>
             </template>
         </div>
+     
 
         <div id="total">
             [[_displayTotal(total)]] total
@@ -176,6 +245,10 @@
             },
             endDate: {
                 type: Number
+            },
+            toDisplay: {
+                type: String,
+                value: 'projects'
             }
         },
 
@@ -187,6 +260,27 @@
         ready: function() {
 
             this.listen(document.body, 'set-durations', '_setDurations');
+        },
+
+        _whichKind: function(toControl, toDisplay) {
+
+            return toControl == toDisplay;
+        },
+
+        _toggleKindProjects: function() {
+            this.toDisplay = 'projects';
+        },  
+
+        _toggleKindTasks: function() {
+            this.toDisplay = 'tasks';
+        },  
+
+        _isActive: function(toControl, toDisplay) {
+            if( toControl == toDisplay ) {
+                return 'active';
+            } else {
+                return '';
+            }
         },
 
         _calculateClass: function(total) {
@@ -223,6 +317,18 @@
 
             var title = 'No Project';
             projects.forEach(function(val, key){
+                if( val.id == id) {
+                    title = val.title;
+                }
+            });
+
+            return title;
+        },
+
+        _displayTask: function(id, tasks){
+
+            var title = 'No Task';
+            tasks.forEach(function(val, key){
                 if( val.id == id) {
                     title = val.title;
                 }
