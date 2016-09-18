@@ -28,6 +28,10 @@
             -webkit-animation: ticking 2000ms infinite;
             animation: ticking 2000ms infinite;
         }
+
+        :host.stopwatch div small {
+            color:#FFF;
+        }
         
         @-webkit-keyframes ticking {
             0% {
@@ -134,10 +138,17 @@
             background-size: 16px 16px;
             outline: none;
         }
+
+        small {
+            font-size:9px;
+            position: relative;
+            top:-4px;
+            color:#666;
+        }
         </style>
         <input id="input" type="text" value$="[[_calculateHours(duration)]]:[[_calculateMinutes(duration)]]" on-blur="_save" on-keydown="_keydown" />
         <div on-tap="_openInput">
-            [[_calculateHours(duration)]]<span>:</span>[[_calculateMinutes(duration)]]
+            [[_calculateHours(duration)]]<span>:</span>[[_calculateMinutes(duration)]] <small>[[_calculateSeconds(duration)]]</small>
             <button on-tap="_toggleStopwatch">
                 Toggle Stopwatch
             </button>
@@ -181,6 +192,17 @@
             }
             return minutesNow;
         },
+
+        _calculateSeconds: function(duration) {
+
+            var minutesNow = Math.floor(duration / 60);
+            var secondsNow = duration - (minutesNow * 60);
+            if (secondsNow < 10) {
+                secondsNow = '0' + secondsNow;
+            }
+            return secondsNow;
+        },
+
 
         _openInput: function() {
             this.$.input.focus();
