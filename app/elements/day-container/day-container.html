@@ -10,7 +10,9 @@
         }
 
         :host:hover button {
-            opacity:1;
+            border: var(--color-border) 1px solid;
+            box-shadow: var(--shadow);
+            color:#333;
         }
         
         header {
@@ -43,19 +45,18 @@
             margin: 1.5rem 0 0 0;
             float: right;
             height: 5rem;
-            border: var(--color-border) 1px solid;
+            border: transparent 1px solid;
             background: #FFF;
             border-radius: 4px;
             padding: 0 2rem;
-            box-shadow: var(--shadow);
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: .05em;
             font-weight: 600;
             outline: none;
-            opacity:0;
             cursor:pointer;
             transition:all 240ms ease;
+            color:var(--color-border);
         }
 
         button:hover {
