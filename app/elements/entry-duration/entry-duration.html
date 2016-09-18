@@ -8,8 +8,8 @@
             display: block;
         }
         
-        :host:hover div {
-            background: #FFF;
+        :host div:hover {
+            background:#FFF;
         }
         
         :host.stopwatch div {
@@ -191,7 +191,7 @@
             var tmp = e.target.value.split(':');
             tmp = ((parseInt(tmp[0]) * 60) + parseInt(tmp[1])) * 60;
 
-            if (isNaN(!tmp)) {
+            if (!isNaN(tmp)) {
                 this.duration = tmp;
             }
         },

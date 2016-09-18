@@ -199,7 +199,6 @@
         _optionsChanged: function(optionsChange) {
 
             optionsChange.base.forEach(function(val, key) {
-                console.log(val.title, val.state);
                 if( val.state == 2 ) {
                     this.set('selected.' + val.id, false);
                 } else {
