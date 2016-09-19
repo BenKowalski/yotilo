@@ -8,10 +8,27 @@
             width: 126rem;
             margin: 0 auto;
         }
+
+        p {
+            font-size: 15px;
+            line-height: 3rem;
+            margin: 0 0 5rem 0;
+            text-align: center;
+        }
+
+        p a {
+            color:var(--color-blue);
+        }
+
         </style>
         <template is="dom-repeat" items="{{days}}">
             <day-container id$="day-[[item]]" day="[[item]]" initialCount="1" projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]"></day-container>
         </template>
+
+        <p>
+            Need help using Yotilo?<br />
+            <a href="/howto">Read our howto</a> for a description of all functions.
+        </p>
     </template>
     <script>
     Polymer({
