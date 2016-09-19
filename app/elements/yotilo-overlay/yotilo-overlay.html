@@ -30,6 +30,7 @@
         }
         
         div {
+            position: relative;
             max-width: 82rem;
             margin: 12rem auto;
             background: #FFF;
@@ -40,8 +41,24 @@
             transform: translateY(3rem);
             transition: all 500ms ease;
         }
+
+        button {
+            width:4rem;
+            height:4rem;
+            border:0;
+            background:transparent url(/images/icons/x-white.svg) no-repeat center center;
+            background-size:16px 16px;
+            position: absolute;
+            bottom:100%;
+            right:0;
+            overflow: hidden;
+            text-indent: -9999px;
+            cursor:pointer;
+            outline:none;
+        }
         </style>
         <div on-tap="_stopPropagation">
+            <button on-tap="_close">Close overlay</button>
             <content></content>
         </div>
     </template>
