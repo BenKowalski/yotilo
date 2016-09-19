@@ -20,3 +20,42 @@ body {
   padding:0;
   margin:0;
 }
+
+.content {
+	min-height:100rem;
+}
+
+footer {
+	display:block;
+	border-top:#B8C2CC 1px solid;
+	text-align: center;
+}
+
+footer nav {
+	display:inline-block;
+}
+
+footer nav ul {
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+
+footer nav ul li {
+	float:left;
+	margin:0;
+	padding:0;
+}
+
+footer nav ul li a {
+	display:block;
+	color:#007ED9;
+	font-size:14px;
+	line-height: 7rem;
+	padding:0 2rem;
+	text-decoration: none;
+}
+
+footer nav ul li a:hover {
+	background:#EEE;
+}

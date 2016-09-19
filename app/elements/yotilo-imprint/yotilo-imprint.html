@@ -1,0 +1,149 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="yotilo-imprint">
+    <template>
+        <style>
+        :host {}
+        
+        div.c {
+            width: 80rem;
+            margin: 0 auto;
+        }
+        
+        img {
+            margin: 50px auto;
+            display: block;
+            width: 312px;
+            height: 113px;
+        }
+        
+        h1 {
+            margin:5rem 0 1rem 0;
+            padding:0;
+            line-height: 5rem;
+            font-size: 26px;
+            color: var(--color-blue);
+            font-weight: 500;
+        }
+
+        h2 {
+            margin:5rem 0 1rem 0;
+            padding:0;
+            line-height: 5rem;
+            font-size: 20px;
+            color: var(--color-blue);
+            font-weight: 500;
+        }
+        
+        p {
+            font-size: 15px;
+            line-height: 3rem;
+            margin: 0 0 5rem 0;
+        }
+
+        hr {
+            border:0;
+            height:1px;
+            background:var(--color-border);
+        }
+        
+        p.c {
+            text-align: center;
+            -webkit-font-smoothing: antialiased;
+            font-size: 13px;
+            line-height: 2rem;
+        }
+        
+        p.faded {
+            color: var(--color-border);
+        }
+        
+        p span {
+            color: var(--color-blue);
+        }
+        
+        button,
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            margin: 0 auto 1rem auto;
+            line-height: 5rem;
+            height: 5rem;
+            border: var(--color-border) 1px solid;
+            background: #FFF;
+            border-radius: 4px;
+            padding: 0 2rem;
+            box-shadow: var(--shadow);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: all 240ms ease;
+        }
+        
+        button:hover,
+        .btn:hover {
+            color: var(--color-blue);
+            border-color: var(--color-blue);
+        }
+
+        .btn-wrapper {
+            position: absolute;
+            top:2rem;
+            left:0;
+            width:100%;
+            text-align: center;
+        }
+        </style>
+        <div class="c">
+            <div class="btn-wrapper">
+                <a href="/" class="btn">
+                    Back to App
+                </a>
+            </div>
+            <img src="/images/visuals/visual-1.svg" alt="Yotilo" />
+            <h1>
+                Imprint
+            </h1>
+
+            <hr />
+
+            <h2>
+                Legal Disclosure
+            </h2>
+            <p>
+                Information in accordance with section 5 TMG<br />
+
+                Benjamin Kowalski<br />
+                Merkurstr. 44<br />
+                40223 Düsseldorf
+            </p>
+
+            <h2>
+                Contact
+            </h2>
+
+            <p>
+                Telephone: +49 211 73278838<br />
+                E-Mail: <a href="mailto:Benjamin.Kowalski.1987@gmail.com">Benjamin.Kowalski.1987@gmail.com</a><br />
+                Internetaddress: <a href="https://yotilo.com">https://yotilo.com</a>
+            </p>
+
+            <h2>
+                VAT number
+            </h2>
+
+            <p>
+                VAT indentification number in accorance with section 27 a of the German VAT act:
+                139 5119 1784
+            </p>
+
+        </div>
+    </template>
+    <script>
+    Polymer({
+        is: 'yotilo-imprint',
+    });
+    </script>
+</dom-module>

@@ -70,16 +70,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Main Content -->
         <div class="content">
-          <yotilo-header projects="[[projects]]" tasks="[[tasks]]" projects-selected="{{projectsSelected}}" tasks-selected="{{tasksSelected}}" start-date="{{startDate}}" end-date="{{endDate}}"></yotilo-header>
-
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
             <section data-route="home">
+              <yotilo-header projects="[[projects]]" tasks="[[tasks]]" projects-selected="{{projectsSelected}}" tasks-selected="{{tasksSelected}}" start-date="{{startDate}}" end-date="{{endDate}}"></yotilo-header>
               <yotilo-statistics projects="[[projects]]" tasks="[[tasks]]" start-date="{{startDate}}" end-date="{{endDate}}"></yotilo-statistics>
               <days-list projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]" start-date="{{startDate}}" end-date="{{endDate}}">
               </days-list>
             </section>
+            <section data-route="imprint">
+              <yotilo-imprint></yotilo-imprint>
+            </section>
           </iron-pages>
         </div>
+
+        <footer>
+          <nav>
+            <ul>
+              <li>
+                <a href="/">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="/howto">
+                  How to use Yotilo
+                </a>
+              </li>
+              <li>
+                <a href="/imprint">
+                  Imprint
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
 
         <yotilo-overlay overlayid="projects">
           <yotilo-assetlist asset="projects" data="{{projects}}"></yotilo-assetlist>
