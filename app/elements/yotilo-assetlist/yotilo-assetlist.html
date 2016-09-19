@@ -292,10 +292,23 @@
 
         _archive: function(e) {
             e.model.set('item.state', 2);
+            this._resetAssets();
         },
 
         _activate: function(e) {
             e.model.set('item.state', 1);
+            this._resetAssets();
+        },
+
+        _resetAssets: function() {
+            this.async(function(){
+                var tmp = this.data;
+                this.set('data', []);
+                
+                this.async(function(){
+                    this.set('data', tmp);
+                }.bind(this));
+            }.bind(this));
         },
 
         _delete: function(e) {
