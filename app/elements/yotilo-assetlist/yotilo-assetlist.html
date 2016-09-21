@@ -20,10 +20,10 @@
             cursor: pointer;
             transition: all 240ms ease;
         }
-
+        
         button:hover {
-            border-color:var(--color-blue);
-            color:var(--color-blue);
+            border-color: var(--color-blue);
+            color: var(--color-blue);
         }
         
         header {
@@ -36,9 +36,9 @@
             float: left;
             margin-right: 1rem;
             color: var(--color-border);
-            padding:0 1rem;
-            height:4rem;
-            font-size:10px;
+            padding: 0 1rem;
+            height: 4rem;
+            font-size: 10px;
         }
         
         header button.active {
@@ -84,9 +84,9 @@
             transform: translateY(-50%);
             transition: all 250ms ease;
         }
-
+        
         div button + button {
-            right:20rem;
+            right: 20rem;
         }
         
         div button:hover {
@@ -112,6 +112,7 @@
         }
         </style>
         <iron-localstorage name$="[[asset]]" value="{{data}}" on-iron-localstorage-load-empty="_initAsset"></iron-localstorage>
+        <iron-localstorage name$="[[asset]]-deleted" value="{{deleted}}" on-iron-localstorage-load-empty="_initDeleted"></iron-localstorage>
         <header class="cf">
             <button class$="[[_classActive(0, toShow)]]" on-tap="_toggleArchivedTrue">
                 Active [[asset]] ([[_getActiveCount(data.*)]])
@@ -129,7 +130,6 @@
                     </button>
                 </div>
             </template>
-
             <template is="dom-if" if="[[_emptyActive(data.*)]]">
                 <section id="empty">
                     <p>
@@ -141,7 +141,6 @@
                 Add Entry
             </button>
         </template>
-
         <template is="dom-if" if="[[!toShow]]">
             <template is="dom-repeat" items="{{data}}" filter="_filterArchived" observe="state" sort="_sort">
                 <div>
@@ -172,6 +171,11 @@
                 type: String
             },
             data: {
+                type: Array,
+                value: [],
+                notify: true
+            },
+            deleted: {
                 type: Array,
                 value: [],
                 notify: true
@@ -280,6 +284,10 @@
             this.set('data', []);
         },
 
+        _initDeleted: function() {
+            this.set('deleted', []);
+        },
+
         _save: function(e) {
             e.model.set('item.title', e.target.value);
         },
@@ -301,11 +309,11 @@
         },
 
         _resetAssets: function() {
-            this.async(function(){
+            this.async(function() {
                 var tmp = this.data;
                 this.set('data', []);
-                
-                this.async(function(){
+
+                this.async(function() {
                     this.set('data', tmp);
                 }.bind(this));
             }.bind(this));
@@ -320,10 +328,19 @@
             });
 
             this.data.forEach(function(val, key) {
-                if( val.id == idToDelete ) {
+                if (val.id == idToDelete) {
                     this.splice('data', key, 1);
                 }
             }.bind(this));
+
+            this.push('deleted', idToDelete);
+
+        },
+
+        _prevDay: function(day) {
+            var t2 = new Date(day - 86400000 + 7200000);
+            var t3 = new Date(t2.getFullYear(), t2.getMonth(), t2.getDate(), 0, 0, 0).getTime();
+            return t3;
         },
 
         _filter: function(item) {

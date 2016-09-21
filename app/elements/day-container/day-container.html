@@ -80,7 +80,7 @@
             </button>
         </header>
         <template is="dom-repeat" initialCount="1" items="{{data}}" as="time" sort="_sort" filter="{{_filter(projectsSelected.*, tasksSelected.*)}}">
-            <time-entry data="{{time}}" projects="[[projects]]" tasks="[[tasks]]"></time-entry>
+            <time-entry data="{{time}}" projects="[[projects]]" tasks="[[tasks]]" deleted-projects="[[deletedProjects]]" deleted-tasks="[[deletedTasks]]"></time-entry>
         </template>
     </template>
     <script>

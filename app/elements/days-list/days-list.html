@@ -22,7 +22,7 @@
 
         </style>
         <template is="dom-repeat" items="{{days}}">
-            <day-container id$="day-[[item]]" day="[[item]]" initialCount="1" projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]"></day-container>
+            <day-container id$="day-[[item]]" day="[[item]]" initialCount="1" projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]" deleted-projects="[[deletedProjects]]" deleted-tasks="[[deletedTasks]]"></day-container>
         </template>
 
         <p>

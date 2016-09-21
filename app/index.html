@@ -74,7 +74,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <section data-route="home">
               <yotilo-header projects="[[projects]]" tasks="[[tasks]]" projects-selected="{{projectsSelected}}" tasks-selected="{{tasksSelected}}" start-date="{{startDate}}" end-date="{{endDate}}"></yotilo-header>
               <yotilo-statistics projects="[[projects]]" tasks="[[tasks]]" start-date="{{startDate}}" end-date="{{endDate}}"></yotilo-statistics>
-              <days-list projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]" start-date="{{startDate}}" end-date="{{endDate}}">
+              <days-list projects="[[projects]]" tasks="[[tasks]]" projects-selected="[[projectsSelected]]" tasks-selected="[[tasksSelected]]" start-date="{{startDate}}" end-date="{{endDate}}" deleted-projects="[[deletedProjects]]" deleted-tasks="[[deletedTasks]]">
               </days-list>
             </section>
             <section data-route="imprint">
@@ -117,11 +117,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </footer>
 
         <yotilo-overlay overlayid="projects">
-          <yotilo-assetlist asset="projects" data="{{projects}}"></yotilo-assetlist>
+          <yotilo-assetlist asset="projects" data="{{projects}}" deleted="{{deletedProjects}}"></yotilo-assetlist>
         </yotilo-overlay>
 
         <yotilo-overlay overlayid="tasks">
-          <yotilo-assetlist asset="tasks" data="{{tasks}}"></yotilo-assetlist>
+          <yotilo-assetlist asset="tasks" data="{{tasks}}" deleted="{{deletedTasks}}"></yotilo-assetlist>
         </yotilo-overlay>
 
         <yotilo-overlay overlayid="welcome">

@@ -31,9 +31,9 @@
             float: left;
             width: 18%;
         }
-
+        
         .col.big {
-            width:25%;
+            width: 25%;
         }
         
         button {
@@ -81,11 +81,30 @@
                 type: Object,
                 value: {},
                 notify: true
+            },
+            deletedProjects: {
+                type: Array,
+                observer: '_deletedChanged'
+            },
+            deletedTasks: {
+                type: Array,
+                observer: '_deletedChanged'
             }
         },
 
         listeners: {
             'select-option': '_selectOption'
+        },
+
+        _deletedChanged: function(deleted) {
+
+            this.async(function() {
+                deleted.forEach(function(val, key) {
+                    if (this.data.project == val || this.data.task == val) {
+                        this._delete();
+                    }
+                }.bind(this));
+            }.bind(this));
         },
 
         ready: function() {
@@ -94,9 +113,9 @@
 
         _assetDeleted: function(e) {
 
-            if( this.data.project == e.detail.id || this.data.task == e.detail.id) {
+            if (this.data.project == e.detail.id || this.data.task == e.detail.id) {
                 this._delete();
-            } 
+            }
         },
 
         _selectOption: function(e) {
@@ -106,7 +125,7 @@
         _delete: function() {
             this.fire('delete-entry', {
                 createdAt: this.data.createdAt
-            })
+            });
         }
     });
     </script>
