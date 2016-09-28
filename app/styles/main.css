@@ -59,3 +59,36 @@ footer nav ul li a {
 footer nav ul li a:hover {
 	background:#EEE;
 }
+
+#nomobile {
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:#007ED9;
+	z-index:10000;
+}
+
+#nomobile p {
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform:translateX(-50%) translateY(-50%);
+	max-width:95%;
+	width:600px;
+	color:#FFF;
+	font-size:12px;
+	line-height:18px;
+	text-align: center;
+}
+
+#nomobile p a {
+	color:inherit;
+}
+
+@media screen and (min-width:996px) {
+	#nomobile {
+		display:none;
+	}
+}
